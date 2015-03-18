@@ -23,12 +23,17 @@ public class PolicyMapDefinition {
 
     private final DestinationPolicyDefinition destinationPolicyDefinition;
     private PolicyEntriesDefinition policyEntriesDefinition;
+    private DefaultPolicyEntryDefinition defaultPolicyEntryDefinition;
 
     PolicyMapDefinition(DestinationPolicyDefinition destinationPolicyDefinition) {
         assert (destinationPolicyDefinition != null);
         this.destinationPolicyDefinition = destinationPolicyDefinition;
     }
 
+    public DefaultPolicyEntryDefinition defaultEntry() {
+        defaultPolicyEntryDefinition = new DefaultPolicyEntryDefinition(this);
+        return defaultPolicyEntryDefinition;
+    }
 
     public PolicyEntriesDefinition policyEntries() {
         policyEntriesDefinition = new PolicyEntriesDefinition(this);
@@ -41,5 +46,9 @@ public class PolicyMapDefinition {
 
     PolicyEntriesDefinition getPolicyEntriesDefinition() {
         return policyEntriesDefinition;
+    }
+
+    DefaultPolicyEntryDefinition getDefaultPolicyEntryDefinition() {
+        return defaultPolicyEntryDefinition;
     }
 }

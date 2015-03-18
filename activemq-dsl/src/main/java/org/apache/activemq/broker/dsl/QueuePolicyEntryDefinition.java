@@ -19,7 +19,7 @@ package org.apache.activemq.broker.dsl;
 /**
  * @author jkorab
  */
-public class QueuePolicyEntryDefinition extends PolicyEntryDefinition {
+public class QueuePolicyEntryDefinition extends DestinationPolicyEntryDefinition {
 
     private int expireMessagesPeriod;
 

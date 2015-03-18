@@ -27,31 +27,59 @@ import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.Topic;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.ActiveMQPrefetchPolicy;
-import org.apache.activemq.broker.BrokerService;
+import org.apache.activemq.broker.dsl.ActiveMQBrokers;
 import org.apache.activemq.broker.region.policy.ConstantPendingMessageLimitStrategy;
-import org.apache.activemq.broker.region.policy.PolicyEntry;
-import org.apache.activemq.broker.region.policy.PolicyMap;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.command.ActiveMQMessage;
+import org.apache.activemq.test.dsl.BrokerResource;
+import org.apache.mina.util.AvailablePortFinder;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
 /**
  *
  */
-public class AdvisoryTests extends TestCase {
-
-    protected BrokerService broker;
+public class AdvisoryTests {
 
     protected static final int MESSAGE_COUNT = 2000;
     protected Connection connection;
-    protected String bindAddress = ActiveMQConnectionFactory.DEFAULT_BROKER_BIND_URL;
-    protected int topicCount;
+
+    @Rule
+    public BrokerResource broker = new BrokerResource(
+            ActiveMQBrokers.broker("advisory").useJmx(false).persistent(false)
+                .destinationPolicy()
+                    .policyMap()
+                        .defaultEntry()
+                            .advisoryForFastProducers(true)
+                            .advisoryForConsumed(true)
+                            .advisoryForDelivery(true)
+                            .advisoryForDiscardingMessages(true)
+                            .advisoryForSlowConsumers(true)
+                            .advisoryWhenFull(true)
+                            .producerFlowControl(false)
+                            .pendingMessageLimitStrategy(getPendingMessageLimitStrategy())
+                        .end()
+                    .end()
+                .end()
+                .transportConnectors()
+                    .transportConnector("openwire", "tcp://localhost:" + AvailablePortFinder.getNextAvailable()).end()
+                .end()
+        );
 
 
+    private ConstantPendingMessageLimitStrategy getPendingMessageLimitStrategy() {
+        ConstantPendingMessageLimitStrategy strategy = new ConstantPendingMessageLimitStrategy();
+        strategy.setLimit(10);
+        return strategy;
+    }
+
+    @Test
     public void testNoSlowConsumerAdvisory() throws Exception {
         Session s = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Queue queue = s.createQueue(getClass().getName());
@@ -76,6 +104,7 @@ public class AdvisoryTests extends TestCase {
         assertNull(msg);
     }
 
+    @Test
     public void testSlowConsumerAdvisory() throws Exception {
         Session s = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Queue queue = s.createQueue(getClass().getName());
@@ -97,6 +126,7 @@ public class AdvisoryTests extends TestCase {
         assertNotNull(msg);
     }
 
+    @Test
     public void testMessageDeliveryAdvisory() throws Exception {
         Session s = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Queue queue = s.createQueue(getClass().getName());
@@ -116,6 +146,7 @@ public class AdvisoryTests extends TestCase {
         assertNotNull(msg);
     }
 
+    @Test
     public void testMessageConsumedAdvisory() throws Exception {
         Session s = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Queue queue = s.createQueue(getClass().getName());
@@ -142,6 +173,7 @@ public class AdvisoryTests extends TestCase {
         assertEquals(originalId, id);
     }
 
+    @Test
     public void testMessageExpiredAdvisory() throws Exception {
         Session s = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Queue queue = s.createQueue(getClass().getName());
@@ -163,6 +195,7 @@ public class AdvisoryTests extends TestCase {
         assertNotNull(msg);
     }
 
+    @Test
     public void xtestMessageDiscardedAdvisory() throws Exception {
         Session s = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Topic topic = s.createTopic(getClass().getName());
@@ -180,61 +213,26 @@ public class AdvisoryTests extends TestCase {
         }
 
         Message msg = advisoryConsumer.receive(1000);
-        assertNotNull(msg);
+        assertNotNull(msg); // FIXME failing
     }
 
-    @Override
-    protected void setUp() throws Exception {
-        if (broker == null) {
-            broker = createBroker();
-        }
+    @Before
+    public void setUp() throws Exception {
         ConnectionFactory factory = createConnectionFactory();
         connection = factory.createConnection();
         connection.start();
-        super.setUp();
     }
 
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         connection.close();
-        if (broker != null) {
-            broker.stop();
-        }
     }
 
     protected ActiveMQConnectionFactory createConnectionFactory()
             throws Exception {
-        ActiveMQConnectionFactory cf = new ActiveMQConnectionFactory(
-                ActiveMQConnection.DEFAULT_BROKER_URL);
+        String connectionUri = broker.getTcpConnectionUri("openwire");
+        ActiveMQConnectionFactory cf = new ActiveMQConnectionFactory(connectionUri);
         return cf;
     }
 
-    protected BrokerService createBroker() throws Exception {
-        BrokerService answer = new BrokerService();
-        configureBroker(answer);
-        answer.start();
-        return answer;
-    }
-
-    protected void configureBroker(BrokerService answer) throws Exception {
-        answer.setPersistent(false);
-        PolicyEntry policy = new PolicyEntry();
-        policy.setAdvisoryForFastProducers(true);
-        policy.setAdvisoryForConsumed(true);
-        policy.setAdvisoryForDelivery(true);
-        policy.setAdvisoryForDiscardingMessages(true);
-        policy.setAdvisoryForSlowConsumers(true);
-        policy.setAdvisoryWhenFull(true);
-        policy.setProducerFlowControl(false);
-        ConstantPendingMessageLimitStrategy strategy  = new ConstantPendingMessageLimitStrategy();
-        strategy.setLimit(10);
-        policy.setPendingMessageLimitStrategy(strategy);
-        PolicyMap pMap = new PolicyMap();
-        pMap.setDefaultEntry(policy);
-
-        answer.setDestinationPolicy(pMap);
-        answer.addConnector(bindAddress);
-        answer.setDeleteAllMessagesOnStartup(true);
-    }
 }

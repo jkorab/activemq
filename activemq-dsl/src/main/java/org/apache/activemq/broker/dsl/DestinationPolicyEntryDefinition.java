@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -14,32 +14,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.activemq.broker.dsl;
 
 /**
  * @author jkorab
  */
-public class DestinationPolicyDefinition {
+public abstract class DestinationPolicyEntryDefinition extends PolicyEntryDefinition {
 
-    private final BrokerDefinition brokerDefinition;
-    private PolicyMapDefinition policyMapDefinition;
+    private final String name;
+    private final PolicyEntriesDefinition policyEntriesDefinition;
 
-    DestinationPolicyDefinition(BrokerDefinition brokerDefinition) {
-        assert (brokerDefinition != null);
-        this.brokerDefinition = brokerDefinition;
+    DestinationPolicyEntryDefinition(PolicyEntriesDefinition policyEntriesDefinition, String name) {
+        assert (name != null);
+        assert (policyEntriesDefinition != null);
+        this.name = name;
+        this.policyEntriesDefinition = policyEntriesDefinition;
     }
 
-    public PolicyMapDefinition policyMap() {
-        policyMapDefinition = new PolicyMapDefinition(this);
-        return policyMapDefinition;
+    public PolicyEntriesDefinition end() {
+        return policyEntriesDefinition;
     }
 
-    public BrokerDefinition end() {
-        return brokerDefinition;
+    String getName() {
+        return name;
     }
-
-    PolicyMapDefinition getPolicyMapDefinition() {
-        return policyMapDefinition;
-    }
-
 }

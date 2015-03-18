@@ -19,6 +19,10 @@ package org.apache.activemq.broker.dsl;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.commons.lang.Validate;
 
+import java.util.Date;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 /**
  * FIXME this class name clashes with {@link org.apache.activemq.broker.BrokerContext}
  *
@@ -40,6 +44,37 @@ public class BrokerContext {
             brokerService.start();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+
+        // wait for startup
+        final int maxWaitTime = 10000;
+        final CountDownLatch startLatch = new CountDownLatch(1);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                long waitStartTime = new Date().getTime();
+
+                while(!brokerService.isStarted()) {
+                    try {
+                        Thread.sleep(100);
+                        long now = new Date().getTime();
+                        if ((now - waitStartTime) > maxWaitTime) {
+                            return; // expired
+                        }
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                startLatch.countDown();
+            }
+        }).start();
+        try {
+            if (!startLatch.await(maxWaitTime, TimeUnit.MILLISECONDS)) {
+                // timeout
+                throw new RuntimeException("unable to start broker within " + maxWaitTime + " ms");
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException();
         }
     }
 

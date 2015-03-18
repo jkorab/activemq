@@ -26,8 +26,11 @@ import org.apache.activemq.network.DiscoveryNetworkConnector;
 import org.apache.activemq.network.NetworkConnector;
 import org.apache.activemq.security.AuthenticationUser;
 import org.apache.activemq.security.SimpleAuthenticationPlugin;
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.PropertyUtils;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,12 +62,42 @@ class BrokerServiceBuilder {
         PolicyMapDefinition policyMapDefinition = destinationPolicyDefinition.getPolicyMapDefinition();
         if (policyMapDefinition == null) return;
 
+        PolicyMap policyMap = new PolicyMap();
+        brokerService.setDestinationPolicy(policyMap);
+
+        policyMap.setDefaultEntry(buildPolicyEntry(policyMapDefinition.getDefaultPolicyEntryDefinition()));
+
         PolicyEntriesDefinition policyEntriesDefinition = policyMapDefinition.getPolicyEntriesDefinition();
+        addPolicyEntries(policyMap, policyEntriesDefinition);
+    }
+
+    private PolicyEntry buildPolicyEntry(DefaultPolicyEntryDefinition definition) {
+        if (definition == null) return null;
+
+        PolicyEntry policyEntry = new PolicyEntry();
+        policyEntry.setAdvisoryForFastProducers(safe(definition.getAdvisoryForFastProducers()));
+        policyEntry.setAdvisoryForConsumed(safe(definition.getAdvisoryForConsumed()));
+        policyEntry.setAdvisoryForDelivery(safe(definition.getAdvisoryForDelivery()));
+        policyEntry.setAdvisoryForDiscardingMessages(safe(definition.getAdvisoryForDiscardingMessages()));
+        policyEntry.setAdvisoryForSlowConsumers(safe(definition.getAdvisoryForSlowConsumers()));
+        policyEntry.setAdvisoryWhenFull(safe(definition.getAdvisoryWhenFull()));
+        policyEntry.setProducerFlowControl(safe(definition.getProducerFlowControl()));
+
+        policyEntry.setPendingMessageLimitStrategy(definition.getPendingMessageLimitStrategy());
+        return policyEntry;
+    }
+
+    boolean safe(Boolean b) {
+        return (b == null) ? false : b;
+    }
+
+    private void addPolicyEntries(PolicyMap policyMap, PolicyEntriesDefinition policyEntriesDefinition) {
         if (policyEntriesDefinition == null) return;
 
         List<PolicyEntryDefinition> policyEntryDefinitions = policyEntriesDefinition.getPolicyEntryDefinitions();
         List<PolicyEntry> policyEntries = new ArrayList<>();
         for (PolicyEntryDefinition policyEntryDefinition: policyEntryDefinitions) {
+            // TODO use buildPolicyEntry()
             PolicyEntry policyEntry = new PolicyEntry();
             if (policyEntryDefinition instanceof QueuePolicyEntryDefinition) {
                 QueuePolicyEntryDefinition queuePolicyEntryDefinition = (QueuePolicyEntryDefinition) policyEntryDefinition;
@@ -75,9 +108,7 @@ class BrokerServiceBuilder {
             policyEntries.add(policyEntry);
         }
 
-        PolicyMap policyMap = new PolicyMap();
         policyMap.setPolicyEntries(policyEntries);
-        brokerService.setDestinationPolicy(policyMap);
     }
 
     private void addPlugins(BrokerService brokerService, PluginsDefinition pluginsDefinition) {
