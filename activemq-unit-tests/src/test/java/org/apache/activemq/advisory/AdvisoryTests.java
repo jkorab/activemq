@@ -43,8 +43,10 @@ import org.apache.activemq.command.ActiveMQMessage;
  *
  */
 public class AdvisoryTests extends TestCase {
-    protected static final int MESSAGE_COUNT = 2000;
+
     protected BrokerService broker;
+
+    protected static final int MESSAGE_COUNT = 2000;
     protected Connection connection;
     protected String bindAddress = ActiveMQConnectionFactory.DEFAULT_BROKER_BIND_URL;
     protected int topicCount;

@@ -231,6 +231,7 @@
     <module>activemq-client</module>
     <module>activemq-openwire-legacy</module>
     <module>activemq-broker</module>
+    <module>activemq-dsl</module>
     <module>activemq-stomp</module>
     <module>activemq-mqtt</module>
     <module>activemq-amqp</module>
