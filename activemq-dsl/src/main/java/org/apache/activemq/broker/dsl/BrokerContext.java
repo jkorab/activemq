@@ -19,6 +19,7 @@ package org.apache.activemq.broker.dsl;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.commons.lang.Validate;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -84,5 +85,29 @@ public class BrokerContext {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Gets the name of the openwire connector defined on this broker. The first connector whose scheme contains either
+     * tcp or nio is returned.
+     * @return A transport connector name, or null.
+     */
+    public String getOpenwireConnectorName() {
+        TransportConnectorsDefinition transportConnectorsDefinition = brokerDefinition.getTransportConnectorsDefinition();
+        if (transportConnectorsDefinition == null) {
+            return null;
+        }
+
+        Collection<TransportConnectorDefinition> transportConnectorDefinitions =
+                transportConnectorsDefinition.getTransportConnectorDefinitions();
+        String connectorName = null;
+        for (TransportConnectorDefinition transportConnectorDefinition : transportConnectorDefinitions) {
+            String uri = transportConnectorDefinition.getUri();
+            if (uri.contains("tcp") || (uri.contains("nio"))) {
+                connectorName = transportConnectorDefinition.getName();
+                break;
+            }
+        }
+        return connectorName;
     }
 }

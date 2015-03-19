@@ -74,22 +74,10 @@ class BrokerServiceBuilder {
     private PolicyEntry buildPolicyEntry(DefaultPolicyEntryDefinition definition) {
         if (definition == null) return null;
 
-        PolicyEntry policyEntry = new PolicyEntry();
-        policyEntry.setAdvisoryForFastProducers(safe(definition.getAdvisoryForFastProducers()));
-        policyEntry.setAdvisoryForConsumed(safe(definition.getAdvisoryForConsumed()));
-        policyEntry.setAdvisoryForDelivery(safe(definition.getAdvisoryForDelivery()));
-        policyEntry.setAdvisoryForDiscardingMessages(safe(definition.getAdvisoryForDiscardingMessages()));
-        policyEntry.setAdvisoryForSlowConsumers(safe(definition.getAdvisoryForSlowConsumers()));
-        policyEntry.setAdvisoryWhenFull(safe(definition.getAdvisoryWhenFull()));
-        policyEntry.setProducerFlowControl(safe(definition.getProducerFlowControl()));
-
-        policyEntry.setPendingMessageLimitStrategy(definition.getPendingMessageLimitStrategy());
+        PolicyEntry policyEntry = new PolicyEntryBuilder().build(definition);
         return policyEntry;
     }
 
-    boolean safe(Boolean b) {
-        return (b == null) ? false : b;
-    }
 
     private void addPolicyEntries(PolicyMap policyMap, PolicyEntriesDefinition policyEntriesDefinition) {
         if (policyEntriesDefinition == null) return;
@@ -97,19 +85,13 @@ class BrokerServiceBuilder {
         List<PolicyEntryDefinition> policyEntryDefinitions = policyEntriesDefinition.getPolicyEntryDefinitions();
         List<PolicyEntry> policyEntries = new ArrayList<>();
         for (PolicyEntryDefinition policyEntryDefinition: policyEntryDefinitions) {
-            // TODO use buildPolicyEntry()
-            PolicyEntry policyEntry = new PolicyEntry();
-            if (policyEntryDefinition instanceof QueuePolicyEntryDefinition) {
-                QueuePolicyEntryDefinition queuePolicyEntryDefinition = (QueuePolicyEntryDefinition) policyEntryDefinition;
-                policyEntry.setQueue(queuePolicyEntryDefinition.getName());
-                policyEntry.setExpireMessagesPeriod(queuePolicyEntryDefinition.getExpireMessagesPeriod());
-
-            }
+            PolicyEntry policyEntry = new PolicyEntryBuilder().build(policyEntryDefinition);
             policyEntries.add(policyEntry);
         }
 
         policyMap.setPolicyEntries(policyEntries);
     }
+
 
     private void addPlugins(BrokerService brokerService, PluginsDefinition pluginsDefinition) {
         if (pluginsDefinition == null) return;

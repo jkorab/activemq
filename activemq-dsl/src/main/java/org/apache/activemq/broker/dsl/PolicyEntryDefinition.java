@@ -16,10 +16,95 @@
  */
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.region.policy.PendingMessageLimitStrategy;
+
 /**
  * Base class for common attributes of queue and topic policyEntry elements.
  * @author jkorab
  */
-public abstract class PolicyEntryDefinition {
+public abstract class PolicyEntryDefinition <T extends PolicyEntryDefinition> {
+
+    private Boolean advisoryForFastProducers;
+    private Boolean advisoryForConsumed;
+    private Boolean advisoryForDelivery;
+    private Boolean advisoryForDiscardingMessages;
+    private Boolean advisoryForSlowConsumers;
+    private Boolean advisoryWhenFull;
+    private Boolean producerFlowControl;
+    private PendingMessageLimitStrategy pendingMessageLimitStrategy;
+
+    public T advisoryForFastProducers(Boolean advisoryForFastProducers) {
+        this.advisoryForFastProducers = advisoryForFastProducers;
+        return (T) this;
+    }
+
+    public T advisoryForConsumed(Boolean advisoryForConsumed) {
+        this.advisoryForConsumed = advisoryForConsumed;
+        return (T) this;
+    }
+
+    public T advisoryForDelivery(Boolean advisoryForDelivery) {
+        this.advisoryForDelivery = advisoryForDelivery;
+        return (T) this;
+    }
+
+    public T advisoryForDiscardingMessages(Boolean advisoryForDiscardingMessages) {
+        this.advisoryForDiscardingMessages = advisoryForDiscardingMessages;
+        return (T) this;
+    }
+
+    public T advisoryForSlowConsumers(Boolean advisoryForSlowConsumers) {
+        this.advisoryForSlowConsumers = advisoryForSlowConsumers;
+        return (T) this;
+    }
+
+    public T advisoryWhenFull(Boolean advisoryWhenFull) {
+        this.advisoryWhenFull = advisoryWhenFull;
+        return (T) this;
+    }
+
+    public T producerFlowControl(Boolean producerFlowControl) {
+        this.producerFlowControl = producerFlowControl;
+        return (T) this;
+    }
+
+    public T pendingMessageLimitStrategy(PendingMessageLimitStrategy pendingMessageLimitStrategy) {
+        this.pendingMessageLimitStrategy = pendingMessageLimitStrategy;
+        return (T) this;
+    }
+
+    Boolean getAdvisoryForFastProducers() {
+        return advisoryForFastProducers;
+    }
+
+    Boolean getAdvisoryForConsumed() {
+        return advisoryForConsumed;
+    }
+
+    Boolean getAdvisoryForDelivery() {
+        return advisoryForDelivery;
+    }
+
+    Boolean getAdvisoryForDiscardingMessages() {
+        return advisoryForDiscardingMessages;
+    }
+
+    Boolean getAdvisoryForSlowConsumers() {
+        return advisoryForSlowConsumers;
+    }
+
+    Boolean getAdvisoryWhenFull() {
+        return advisoryWhenFull;
+    }
+
+    Boolean getProducerFlowControl() {
+        return producerFlowControl;
+    }
+
+    PendingMessageLimitStrategy getPendingMessageLimitStrategy() {
+        return pendingMessageLimitStrategy;
+    }
+
+
 
 }

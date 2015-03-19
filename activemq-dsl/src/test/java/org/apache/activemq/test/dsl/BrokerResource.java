@@ -17,6 +17,7 @@
 
 package org.apache.activemq.test.dsl;
 
+
 import org.apache.activemq.broker.dsl.BrokerContext;
 import org.apache.activemq.broker.dsl.BrokerDefinition;
 import org.apache.activemq.broker.dsl.TransportConnectorDefinition;
@@ -24,15 +25,20 @@ import org.apache.activemq.broker.dsl.TransportConnectorsDefinition;
 import org.apache.commons.lang.Validate;
 import org.junit.rules.ExternalResource;
 
+import javax.jms.Connection;
 import java.net.URI;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author jkorab
  */
 public class BrokerResource extends ExternalResource {
     protected final BrokerDefinition brokerDefinition;
-    private BrokerContext brokerContext;
+
+    private final BrokerContext brokerContext;
+    private final Map<String, ConnectionHolder> connectionHolderMap = new HashMap<>();
 
     public BrokerResource(BrokerDefinition brokerDefinition) {
         Validate.notNull(brokerDefinition, "brokerDefinition is null");
@@ -47,6 +53,9 @@ public class BrokerResource extends ExternalResource {
 
     @Override
     protected void after() {
+        for (ConnectionHolder connectionHolder : connectionHolderMap.values()) {
+            connectionHolder.close();
+        }
         brokerContext.stop();
     }
 
@@ -113,5 +122,39 @@ public class BrokerResource extends ExternalResource {
             throw new IllegalArgumentException(sb.toString());
         }
 
+    }
+
+    /**
+     * Sets up a ConnectionFactory to the named transport connector, and retrieves a started Connection from it.
+     * The Connection will be closed as part of the lifecycle of this resource.
+     * @param transportConnectorName The name of the transportConnector.
+     * @return A connection to the named transport connector.
+     * @throws IllegalStateException if no transportConnector is defined with the given name, or if the scheme
+     * on that transportConnector is anything other than <code>tcp</code> or <code>nio</code>.
+     */
+    public Connection getConnection(String transportConnectorName) {
+        Validate.notEmpty(transportConnectorName, "transportConnectorName is empty");
+
+        ConnectionHolder connectionHolder = connectionHolderMap.get(transportConnectorName);
+        if (connectionHolder == null) {
+            connectionHolder = new ConnectionHolder(getTcpConnectionUri(transportConnectorName));
+            connectionHolderMap.put(transportConnectorName, connectionHolder);
+        }
+        return connectionHolder.getConnection();
+    }
+
+    /**
+     * Convenience method - sets up a ConnectionFactory to the the Openwire (tcp/nio) transport connector if one
+     * is defined, and retrieves a started Connection from it.
+     * The Connection will be closed as part of the lifecycle of this resource.
+     * @return A connection.
+     * @throws IllegalStateException if no openwire connector is defined.
+     */
+    public Connection getConnection() {
+        String transportConnectorName = brokerContext.getOpenwireConnectorName();
+        if (transportConnectorName == null) {
+            throw new IllegalStateException("No OpenWire connector defined on this broker");
+        }
+        return getConnection(transportConnectorName);
     }
 }

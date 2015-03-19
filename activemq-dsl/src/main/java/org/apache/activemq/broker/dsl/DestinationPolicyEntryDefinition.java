@@ -20,14 +20,23 @@ package org.apache.activemq.broker.dsl;
 /**
  * @author jkorab
  */
-public abstract class DestinationPolicyEntryDefinition extends PolicyEntryDefinition {
+public abstract class DestinationPolicyEntryDefinition<T extends PolicyEntryDefinition> extends PolicyEntryDefinition<T> {
 
+    private final boolean temporary;
     private final String name;
     private final PolicyEntriesDefinition policyEntriesDefinition;
+
+    DestinationPolicyEntryDefinition(PolicyEntriesDefinition policyEntriesDefinition) {
+        assert (policyEntriesDefinition != null);
+        this.temporary = true;
+        this.name = null;
+        this.policyEntriesDefinition = policyEntriesDefinition;
+    }
 
     DestinationPolicyEntryDefinition(PolicyEntriesDefinition policyEntriesDefinition, String name) {
         assert (name != null);
         assert (policyEntriesDefinition != null);
+        this.temporary = false;
         this.name = name;
         this.policyEntriesDefinition = policyEntriesDefinition;
     }
@@ -38,5 +47,9 @@ public abstract class DestinationPolicyEntryDefinition extends PolicyEntryDefini
 
     String getName() {
         return name;
+    }
+
+    boolean getTemporary() {
+        return temporary;
     }
 }

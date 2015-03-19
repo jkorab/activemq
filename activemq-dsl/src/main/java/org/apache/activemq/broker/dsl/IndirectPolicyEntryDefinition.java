@@ -42,4 +42,16 @@ public class IndirectPolicyEntryDefinition {
     public PolicyEntryDefinition getPolicyEntryDefinition() {
         return policyEntryDefinition;
     }
+
+    public QueuePolicyEntryDefinition tempQueue() {
+        QueuePolicyEntryDefinition queuePolicyEntryDefinition = new QueuePolicyEntryDefinition(policyEntriesDefinition);
+        policyEntryDefinition = queuePolicyEntryDefinition;
+        return queuePolicyEntryDefinition;
+    }
+
+    public TopicPolicyEntryDefinition tempTopic() {
+        TopicPolicyEntryDefinition topicPolicyEntryDefinition = new TopicPolicyEntryDefinition(policyEntriesDefinition);
+        policyEntryDefinition = topicPolicyEntryDefinition;
+        return topicPolicyEntryDefinition;
+    }
 }

@@ -16,12 +16,8 @@
  */
 package org.apache.activemq.advisory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.jms.BytesMessage;
 import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
 import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
@@ -31,27 +27,64 @@ import javax.jms.Session;
 import javax.jms.TemporaryQueue;
 import javax.jms.Topic;
 
-import junit.framework.TestCase;
-
-import org.apache.activemq.ActiveMQConnection;
-import org.apache.activemq.ActiveMQConnectionFactory;
-import org.apache.activemq.broker.BrokerService;
+import org.apache.activemq.broker.dsl.ActiveMQBrokers;
 import org.apache.activemq.broker.region.policy.ConstantPendingMessageLimitStrategy;
-import org.apache.activemq.broker.region.policy.PolicyEntry;
-import org.apache.activemq.broker.region.policy.PolicyMap;
 import org.apache.activemq.command.ActiveMQDestination;
 import org.apache.activemq.command.ActiveMQMessage;
+import org.apache.activemq.test.dsl.BrokerResource;
+import org.apache.mina.util.AvailablePortFinder;
+import org.junit.Rule;
+import org.junit.Test;
 
-public class AdvisoryTempDestinationTests extends TestCase {
+import static org.junit.Assert.*;
+
+public class AdvisoryTempDestinationTests {
 
     protected static final int MESSAGE_COUNT = 2000;
-    protected BrokerService broker;
-    protected Connection connection;
-    protected String bindAddress = ActiveMQConnectionFactory.DEFAULT_BROKER_BIND_URL;
-    protected int topicCount;
 
+    @Rule
+    public BrokerResource broker = new BrokerResource(
+            ActiveMQBrokers.broker("advisory").useJmx(false).persistent(false)
+                .destinationPolicy()
+                    .policyMap()
+                        .policyEntries()
+                            .policyEntry().tempQueue()
+                                .advisoryForFastProducers(true)
+                                .advisoryForConsumed(true)
+                                .advisoryForDelivery(true)
+                                .advisoryForDiscardingMessages(true)
+                                .advisoryForSlowConsumers(true)
+                                .advisoryWhenFull(true)
+                                .producerFlowControl(false)
+                                .pendingMessageLimitStrategy(getPendingMessageLimitStrategy())
+                            .end()
+                            .policyEntry().tempTopic()
+                                .advisoryForFastProducers(true)
+                                .advisoryForConsumed(true)
+                                .advisoryForDelivery(true)
+                                .advisoryForDiscardingMessages(true)
+                                .advisoryForSlowConsumers(true)
+                                .advisoryWhenFull(true)
+                                .producerFlowControl(false)
+                                .pendingMessageLimitStrategy(getPendingMessageLimitStrategy())
+                            .end()
+                        .end()
+                    .end()
+                .end()
+                .transportConnectors()
+                    .transportConnector("openwire", "tcp://localhost:" + AvailablePortFinder.getNextAvailable()).end()
+                .end());
 
+    private ConstantPendingMessageLimitStrategy getPendingMessageLimitStrategy() {
+        ConstantPendingMessageLimitStrategy strategy = new ConstantPendingMessageLimitStrategy();
+        strategy.setLimit(10);
+        return strategy;
+    }
+
+    @Test
     public void testNoSlowConsumerAdvisory() throws Exception {
+        Connection connection = broker.getConnection();
+
         Session s = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         TemporaryQueue queue = s.createTemporaryQueue();
         MessageConsumer consumer = s.createConsumer(queue);
@@ -75,7 +108,10 @@ public class AdvisoryTempDestinationTests extends TestCase {
         assertNull(msg);
     }
 
+    @Test
     public void testSlowConsumerAdvisory() throws Exception {
+        Connection connection = broker.getConnection();
+
         Session s = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         TemporaryQueue queue = s.createTemporaryQueue();
         MessageConsumer consumer = s.createConsumer(queue);
@@ -96,7 +132,10 @@ public class AdvisoryTempDestinationTests extends TestCase {
         assertNotNull(msg);
     }
 
+    @Test
     public void testMessageDeliveryAdvisory() throws Exception {
+        Connection connection = broker.getConnection();
+
         Session s = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         TemporaryQueue queue = s.createTemporaryQueue();
         MessageConsumer consumer = s.createConsumer(queue);
@@ -115,7 +154,10 @@ public class AdvisoryTempDestinationTests extends TestCase {
         assertNotNull(msg);
     }
 
+    @Test
     public void testTempMessageConsumedAdvisory() throws Exception {
+        Connection connection = broker.getConnection();
+
         Session s = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         TemporaryQueue queue = s.createTemporaryQueue();
         MessageConsumer consumer = s.createConsumer(queue);
@@ -141,7 +183,10 @@ public class AdvisoryTempDestinationTests extends TestCase {
         assertEquals(originalId, id);
     }
 
+    @Test
     public void testMessageExpiredAdvisory() throws Exception {
+        Connection connection = broker.getConnection();
+
         Session s = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
         Queue queue = s.createQueue(getClass().getName());
         MessageConsumer consumer = s.createConsumer(queue);
@@ -162,71 +207,4 @@ public class AdvisoryTempDestinationTests extends TestCase {
         assertNotNull(msg);
     }
 
-    @Override
-    protected void setUp() throws Exception {
-        if (broker == null) {
-            broker = createBroker();
-        }
-        ConnectionFactory factory = createConnectionFactory();
-        connection = factory.createConnection();
-        connection.start();
-        super.setUp();
-    }
-
-    @Override
-    protected void tearDown() throws Exception {
-        super.tearDown();
-        connection.close();
-        if (broker != null) {
-            broker.stop();
-        }
-    }
-
-    protected ActiveMQConnectionFactory createConnectionFactory()
-            throws Exception {
-        ActiveMQConnectionFactory cf = new ActiveMQConnectionFactory(
-                ActiveMQConnection.DEFAULT_BROKER_URL);
-        return cf;
-    }
-
-    protected BrokerService createBroker() throws Exception {
-        BrokerService answer = new BrokerService();
-        configureBroker(answer);
-        answer.start();
-        return answer;
-    }
-
-    protected void configureBroker(BrokerService answer) throws Exception {
-        answer.setPersistent(false);
-        ConstantPendingMessageLimitStrategy strategy = new ConstantPendingMessageLimitStrategy();
-        strategy.setLimit(10);
-        PolicyEntry tempQueueEntry = createPolicyEntry(strategy);
-        tempQueueEntry.setTempQueue(true);
-        PolicyEntry tempTopicEntry = createPolicyEntry(strategy);
-        tempTopicEntry.setTempTopic(true);
-
-        PolicyMap pMap = new PolicyMap();
-        final List<PolicyEntry> policyEntries = new ArrayList<PolicyEntry>();
-        policyEntries.add(tempQueueEntry);
-        policyEntries.add(tempTopicEntry);
-        pMap.setPolicyEntries(policyEntries);
-
-        answer.setDestinationPolicy(pMap);
-        answer.addConnector(bindAddress);
-        answer.setDeleteAllMessagesOnStartup(true);
-    }
-
-    private PolicyEntry createPolicyEntry(ConstantPendingMessageLimitStrategy strategy) {
-        PolicyEntry policy = new PolicyEntry();
-        policy.setAdvisoryForFastProducers(true);
-        policy.setAdvisoryForConsumed(true);
-        policy.setAdvisoryForDelivery(true);
-        policy.setAdvisoryForDiscardingMessages(true);
-        policy.setAdvisoryForSlowConsumers(true);
-        policy.setAdvisoryWhenFull(true);
-        policy.setProducerFlowControl(false);
-        policy.setPendingMessageLimitStrategy(strategy);
-
-        return policy;
-    }
 }

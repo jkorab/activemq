@@ -17,12 +17,10 @@
 
 package org.apache.activemq.broker.dsl;
 
-import org.apache.activemq.broker.region.policy.PendingMessageLimitStrategy;
-
 /**
  * @author jkorab
  */
-public class DefaultPolicyEntryDefinition extends PolicyEntryDefinition {
+public class DefaultPolicyEntryDefinition extends PolicyEntryDefinition<DefaultPolicyEntryDefinition> {
 
     private final PolicyMapDefinition policyMapDefinition;
 
@@ -31,88 +29,8 @@ public class DefaultPolicyEntryDefinition extends PolicyEntryDefinition {
         this.policyMapDefinition = policyMapDefinition;
     }
 
-    private Boolean advisoryForFastProducers;
-    private Boolean advisoryForConsumed;
-    private Boolean advisoryForDelivery;
-    private Boolean advisoryForDiscardingMessages;
-    private Boolean advisoryForSlowConsumers;
-    private Boolean advisoryWhenFull;
-    private Boolean producerFlowControl;
-    private PendingMessageLimitStrategy pendingMessageLimitStrategy;
-
-    public DefaultPolicyEntryDefinition advisoryForFastProducers(Boolean advisoryForFastProducers) {
-        this.advisoryForFastProducers = advisoryForFastProducers;
-        return this;
-    }
-
-    public DefaultPolicyEntryDefinition advisoryForConsumed(Boolean advisoryForConsumed) {
-        this.advisoryForConsumed = advisoryForConsumed;
-        return this;
-    }
-
-    public DefaultPolicyEntryDefinition advisoryForDelivery(Boolean advisoryForDelivery) {
-        this.advisoryForDelivery = advisoryForDelivery;
-        return this;
-    }
-
-    public DefaultPolicyEntryDefinition advisoryForDiscardingMessages(Boolean advisoryForDiscardingMessages) {
-        this.advisoryForDiscardingMessages = advisoryForDiscardingMessages;
-        return this;
-    }
-
-    public DefaultPolicyEntryDefinition advisoryForSlowConsumers(Boolean advisoryForSlowConsumers) {
-        this.advisoryForSlowConsumers = advisoryForSlowConsumers;
-        return this;
-    }
-
-    public DefaultPolicyEntryDefinition advisoryWhenFull(Boolean advisoryWhenFull) {
-        this.advisoryWhenFull = advisoryWhenFull;
-        return this;
-    }
-
-    public DefaultPolicyEntryDefinition producerFlowControl(Boolean producerFlowControl) {
-        this.producerFlowControl = producerFlowControl;
-        return this;
-    }
-
-    public DefaultPolicyEntryDefinition pendingMessageLimitStrategy(PendingMessageLimitStrategy pendingMessageLimitStrategy) {
-        this.pendingMessageLimitStrategy = pendingMessageLimitStrategy;
-        return this;
-    }
-
     public PolicyMapDefinition end() {
         return policyMapDefinition;
     }
 
-    Boolean getAdvisoryForFastProducers() {
-        return advisoryForFastProducers;
-    }
-
-    Boolean getAdvisoryForConsumed() {
-        return advisoryForConsumed;
-    }
-
-    Boolean getAdvisoryForDelivery() {
-        return advisoryForDelivery;
-    }
-
-    Boolean getAdvisoryForDiscardingMessages() {
-        return advisoryForDiscardingMessages;
-    }
-
-    Boolean getAdvisoryForSlowConsumers() {
-        return advisoryForSlowConsumers;
-    }
-
-    Boolean getAdvisoryWhenFull() {
-        return advisoryWhenFull;
-    }
-
-    Boolean getProducerFlowControl() {
-        return producerFlowControl;
-    }
-
-    PendingMessageLimitStrategy getPendingMessageLimitStrategy() {
-        return pendingMessageLimitStrategy;
-    }
 }

@@ -19,12 +19,16 @@ package org.apache.activemq.broker.dsl;
 /**
  * @author jkorab
  */
-public class QueuePolicyEntryDefinition extends DestinationPolicyEntryDefinition {
+public class QueuePolicyEntryDefinition extends DestinationPolicyEntryDefinition<QueuePolicyEntryDefinition> {
 
     private int expireMessagesPeriod;
 
     QueuePolicyEntryDefinition(PolicyEntriesDefinition policyEntriesDefinition, String name) {
         super(policyEntriesDefinition, name);
+    }
+
+    public QueuePolicyEntryDefinition(PolicyEntriesDefinition policyEntriesDefinition) {
+        super(policyEntriesDefinition);
     }
 
     public QueuePolicyEntryDefinition expireMessagesPeriod(int period) {

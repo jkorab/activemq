@@ -15,10 +15,19 @@
  * limitations under the License.
  */
 
-package org.apache.activemq.test.dsl;
+package org.apache.activemq.broker.dsl;
 
 /**
  * @author jkorab
  */
-public @interface Experimental {
+public class TopicPolicyEntryDefinition extends DestinationPolicyEntryDefinition<TopicPolicyEntryDefinition> {
+
+    TopicPolicyEntryDefinition(PolicyEntriesDefinition policyEntriesDefinition, String name) {
+        super(policyEntriesDefinition, name);
+    }
+
+    public TopicPolicyEntryDefinition(PolicyEntriesDefinition policyEntriesDefinition) {
+        super(policyEntriesDefinition);
+    }
+
 }
