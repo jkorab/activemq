@@ -23,7 +23,7 @@ import org.apache.activemq.broker.dsl.model.ManagementContextDef;
  */
 public class ManagementContextBuilder {
 
-    private BrokerBuilder brokerBuilder;
+    private final BrokerBuilder brokerBuilder;
     private ManagementContext1Builder managementContext1Builder;
 
     ManagementContextBuilder(BrokerBuilder brokerBuilder) {
@@ -40,11 +40,11 @@ public class ManagementContextBuilder {
         return brokerBuilder;
     }
 
-    public ManagementContext1Builder getManagementContext1Builder() {
-        return managementContext1Builder;
-    }
-
     public ManagementContextDef build() {
-        return null; // TODO
+        ManagementContextDef managementContextDef = new ManagementContextDef();
+        if (managementContext1Builder != null) {
+            managementContextDef.setManagementContext1Def(managementContext1Builder.build());
+        }
+        return managementContextDef;
     }
 }

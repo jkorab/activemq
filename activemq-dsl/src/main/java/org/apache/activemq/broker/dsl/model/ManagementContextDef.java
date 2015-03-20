@@ -21,4 +21,14 @@ package org.apache.activemq.broker.dsl.model;
  * @author jkorab
  */
 public class ManagementContextDef {
+
+    private ManagementContext1Def managementContext1Def;
+
+    public ManagementContext1Def getManagementContext1Def() {
+        return managementContext1Def;
+    }
+
+    public void setManagementContext1Def(ManagementContext1Def managementContext1Def) {
+        this.managementContext1Def = managementContext1Def;
+    }
 }

@@ -21,4 +21,14 @@ package org.apache.activemq.broker.dsl.model;
  * @author jkorab
  */
 public class ManagementContext1Def {
+
+    private Boolean createConnector;
+
+    public Boolean getCreateConnector() {
+        return createConnector;
+    }
+
+    public void setCreateConnector(Boolean createConnector) {
+        this.createConnector = createConnector;
+    }
 }

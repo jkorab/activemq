@@ -16,21 +16,24 @@
  */
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.dsl.model.ManagementContext1Def;
+
 /**
  * @author jkorab
  */
 public class ManagementContext1Builder {
 
     private final ManagementContextBuilder managementContextBuilder;
-    private boolean createConnector = true;
+    private final ManagementContext1Def managementContext1Def;
 
     ManagementContext1Builder(ManagementContextBuilder managementContextBuilder) {
         assert (managementContextBuilder != null);
         this.managementContextBuilder = managementContextBuilder;
+        this.managementContext1Def = new ManagementContext1Def();
     }
 
     public ManagementContext1Builder createConnector(boolean createConnector) {
-        this.createConnector = createConnector;
+        managementContext1Def.setCreateConnector(createConnector);
         return this;
     }
 
@@ -38,7 +41,7 @@ public class ManagementContext1Builder {
         return managementContextBuilder;
     }
 
-    public boolean isCreateConnector() {
-        return createConnector;
+    public ManagementContext1Def build() {
+        return managementContext1Def;
     }
 }
