@@ -46,6 +46,10 @@ public class PluginsBuilder {
     }
 
     public PluginsDef build() {
-        return null; // TODO
+        PluginsDef pluginsDef = new PluginsDef();
+        if (simpleAuthenticationPluginBuilder != null) {
+            pluginsDef.setSimpleAuthenticationPluginDef(simpleAuthenticationPluginBuilder.build());
+        }
+        return pluginsDef;
     }
 }

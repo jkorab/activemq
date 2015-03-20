@@ -21,4 +21,14 @@ package org.apache.activemq.broker.dsl.model;
  * @author jkorab
  */
 public class PluginsDef {
+
+    private SimpleAuthenticationPluginDef simpleAuthenticationPluginDef;
+
+    public SimpleAuthenticationPluginDef getSimpleAuthenticationPluginDef() {
+        return simpleAuthenticationPluginDef;
+    }
+
+    public void setSimpleAuthenticationPluginDef(SimpleAuthenticationPluginDef simpleAuthenticationPluginDef) {
+        this.simpleAuthenticationPluginDef = simpleAuthenticationPluginDef;
+    }
 }

@@ -17,8 +17,23 @@
 
 package org.apache.activemq.broker.dsl.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author jkorab
  */
 public class SimpleAuthenticationPluginDef {
+
+    // TODO annotate as Users
+    private List<AuthenticationUserDef> authenticationUserDefs = new ArrayList<>();
+
+    public List<AuthenticationUserDef> getAuthenticationUserDefs() {
+        return authenticationUserDefs;
+    }
+
+    public void setAuthenticationUserDefs(List<AuthenticationUserDef> authenticationUserDefs) {
+        this.authenticationUserDefs = authenticationUserDefs;
+    }
+
 }

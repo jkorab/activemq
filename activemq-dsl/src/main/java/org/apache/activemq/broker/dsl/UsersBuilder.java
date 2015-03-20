@@ -16,6 +16,8 @@
  */
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.dsl.model.AuthenticationUserDef;
+import org.apache.activemq.broker.dsl.model.UsersDef;
 import org.apache.commons.lang.Validate;
 
 import java.util.ArrayList;
@@ -49,5 +51,13 @@ public class UsersBuilder {
 
     public List<AuthenticationUserBuilder> getAuthenticationUserBuilders() {
         return authenticationUserBuilders;
+    }
+
+    public List<AuthenticationUserDef> build() {
+        ArrayList<AuthenticationUserDef> authenticationUserDefs = new ArrayList<>();
+        for (AuthenticationUserBuilder authenticationUserBuilder : authenticationUserBuilders) {
+            authenticationUserDefs.add(authenticationUserBuilder.build());
+        }
+        return authenticationUserDefs;
     }
 }

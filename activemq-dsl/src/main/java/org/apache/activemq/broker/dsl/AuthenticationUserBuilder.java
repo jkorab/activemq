@@ -16,6 +16,7 @@
  */
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.dsl.model.AuthenticationUserDef;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -24,44 +25,36 @@ import org.apache.commons.lang.Validate;
 public class AuthenticationUserBuilder {
 
     private final UsersBuilder usersBuilder;
-    private final String username;
-    private String password;
-    private String groups;
+    private final AuthenticationUserDef authenticationUserDef;
 
     AuthenticationUserBuilder(UsersBuilder usersBuilder, String username) {
         assert (usersBuilder != null);
         assert (username != null);
         this.usersBuilder = usersBuilder;
-        this.username = username;
+        authenticationUserDef = new AuthenticationUserDef();
+        authenticationUserDef.setUsername(username);
     }
 
     public AuthenticationUserBuilder password(String password) {
         Validate.notEmpty(password, "password is empty");
-        this.password = password;
+        authenticationUserDef.setPassword(password);
         return this;
     }
 
     public AuthenticationUserBuilder groups(String groups) {
         Validate.notEmpty(groups, "groups is empty");
-        this.groups = groups;
+        // TODO there's probably a better way to do this than pass in a csv
+        authenticationUserDef.setGroups(groups);
         return this;
     }
 
     public UsersBuilder end() {
-        Validate.notNull(password, "password is null");
-        Validate.notNull(groups, "groups is null");
+        Validate.notNull(authenticationUserDef.getPassword(), "password is null");
+        Validate.notNull(authenticationUserDef.getGroups(), "groups is null");
         return usersBuilder;
     }
 
-    public String getGroups() {
-        return groups;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getUsername() {
-        return username;
+    public AuthenticationUserDef build() {
+        return authenticationUserDef;
     }
 }
