@@ -17,8 +17,30 @@
 
 package org.apache.activemq.broker.dsl.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author jkorab
  */
 public class PolicyMapDef {
+
+    private DefaultPolicyEntryDef defaultPolicyEntryDef;
+    private List<PolicyEntryDef> policyEntryDefs = new ArrayList<>();
+
+    public DefaultPolicyEntryDef getDefaultPolicyEntryDef() {
+        return defaultPolicyEntryDef;
+    }
+
+    public void setDefaultPolicyEntryDef(DefaultPolicyEntryDef defaultPolicyEntryDef) {
+        this.defaultPolicyEntryDef = defaultPolicyEntryDef;
+    }
+
+    public List<PolicyEntryDef> getPolicyEntryDefs() {
+        return policyEntryDefs;
+    }
+
+    public void setPolicyEntryDefs(List<PolicyEntryDef> policyEntryDefs) {
+        this.policyEntryDefs = policyEntryDefs;
+    }
 }

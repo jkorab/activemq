@@ -55,6 +55,13 @@ public class PolicyMapBuilder {
     }
 
     public PolicyMapDef build() {
-        return null;
+        PolicyMapDef policyMapDef = new PolicyMapDef();
+        if (defaultPolicyEntryBuilder != null) {
+            policyMapDef.setDefaultPolicyEntryDef(defaultPolicyEntryBuilder.build());
+        }
+        if (policyEntriesBuilder != null) {
+            policyMapDef.setPolicyEntryDefs(policyEntriesBuilder.build());
+        }
+        return policyMapDef;
     }
 }

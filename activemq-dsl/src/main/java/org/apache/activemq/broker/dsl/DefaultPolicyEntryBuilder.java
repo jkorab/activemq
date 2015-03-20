@@ -17,6 +17,8 @@
 
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.dsl.model.DefaultPolicyEntryDef;
+
 /**
  * @author jkorab
  */
@@ -33,4 +35,7 @@ public class DefaultPolicyEntryBuilder extends PolicyEntryBuilder<DefaultPolicyE
         return policyMapBuilder;
     }
 
+    public DefaultPolicyEntryDef build() {
+        return null; // TODO
+    }
 }

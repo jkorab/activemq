@@ -16,6 +16,8 @@
  */
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.dsl.model.PolicyEntryDef;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,4 +52,7 @@ public class PolicyEntriesBuilder {
         return policyEntryBuilders;
     }
 
+    public List<PolicyEntryDef> build() {
+        return null; // TODO
+    }
 }

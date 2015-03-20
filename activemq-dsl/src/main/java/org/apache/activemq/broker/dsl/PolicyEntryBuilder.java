@@ -16,6 +16,7 @@
  */
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.dsl.model.DefaultPolicyEntryDef;
 import org.apache.activemq.broker.region.policy.PendingMessageLimitStrategy;
 
 /**
@@ -104,7 +105,6 @@ public abstract class PolicyEntryBuilder<T extends PolicyEntryBuilder> {
     public PendingMessageLimitStrategy getPendingMessageLimitStrategy() {
         return pendingMessageLimitStrategy;
     }
-
 
 
 }
