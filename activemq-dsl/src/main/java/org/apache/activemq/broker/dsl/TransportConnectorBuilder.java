@@ -16,34 +16,31 @@
  */
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.dsl.model.TransportConnectorDef;
+
 /**
  * @author jkorab
  */
 public class TransportConnectorBuilder {
 
     private final TransportConnectorsBuilder transportConnectorsBuilder;
-    private final String name;
-    private final String uri;
+    private final TransportConnectorDef transportConnectorDef;
 
     public TransportConnectorBuilder(TransportConnectorsBuilder transportConnectorsBuilder, String name, String uri) {
         assert (transportConnectorsBuilder != null);
         assert (name != null);
         assert (uri != null);
-
-        this.uri = uri;
-        this.name = name;
         this.transportConnectorsBuilder = transportConnectorsBuilder;
+        transportConnectorDef = new TransportConnectorDef();
+        transportConnectorDef.setName(name);
+        transportConnectorDef.setUri(uri);
     }
 
     public TransportConnectorsBuilder end() {
         return transportConnectorsBuilder;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getUri() {
-        return uri;
+    public TransportConnectorDef build() {
+        return transportConnectorDef;
     }
 }
