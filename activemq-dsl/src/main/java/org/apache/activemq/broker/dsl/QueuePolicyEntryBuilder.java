@@ -16,27 +16,19 @@
  */
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.dsl.model.QueuePolicyEntryDef;
+
 /**
  * @author jkorab
  */
-public class QueuePolicyEntryBuilder extends DestinationPolicyEntryBuilder<QueuePolicyEntryBuilder> {
-
-    private int expireMessagesPeriod;
+public class QueuePolicyEntryBuilder extends DestinationPolicyEntryBuilder<QueuePolicyEntryDef, QueuePolicyEntryBuilder> {
 
     QueuePolicyEntryBuilder(PolicyEntriesBuilder policyEntriesBuilder, String name) {
-        super(policyEntriesBuilder, name);
+        super(new QueuePolicyEntryDef(), policyEntriesBuilder, name);
     }
 
     public QueuePolicyEntryBuilder(PolicyEntriesBuilder policyEntriesBuilder) {
-        super(policyEntriesBuilder);
+        super(new QueuePolicyEntryDef(), policyEntriesBuilder);
     }
 
-    public QueuePolicyEntryBuilder expireMessagesPeriod(int period) {
-        this.expireMessagesPeriod = period;
-        return this;
-    }
-
-    public int getExpireMessagesPeriod() {
-        return expireMessagesPeriod;
-    }
 }

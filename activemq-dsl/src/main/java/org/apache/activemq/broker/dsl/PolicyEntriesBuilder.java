@@ -53,6 +53,10 @@ public class PolicyEntriesBuilder {
     }
 
     public List<PolicyEntryDef> build() {
-        return null; // TODO
+        List<PolicyEntryDef> policyEntryDefs = new ArrayList<>();
+        for (IndirectPolicyEntryBuilder indirectPolicyEntryBuilder : indirectPolicyEntryBuilders) {
+            policyEntryDefs.add(indirectPolicyEntryBuilder.getPolicyEntryBuilder().build());
+        }
+        return policyEntryDefs;
     }
 }

@@ -20,5 +20,15 @@ package org.apache.activemq.broker.dsl.model;
 /**
  * @author jkorab
  */
-public class QueuePolicyEntryDef {
+public class QueuePolicyEntryDef extends DestinationPolicyEntryDef {
+
+    private Integer expireMessagesPeriod;
+
+    public Integer getExpireMessagesPeriod() {
+        return expireMessagesPeriod;
+    }
+
+    public void setExpireMessagesPeriod(Integer expireMessagesPeriod) {
+        this.expireMessagesPeriod = expireMessagesPeriod;
+    }
 }

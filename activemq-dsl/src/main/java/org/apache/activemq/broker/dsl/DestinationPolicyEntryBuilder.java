@@ -17,27 +17,30 @@
 
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.dsl.model.DestinationPolicyEntryDef;
+
 /**
  * @author jkorab
  */
-public abstract class DestinationPolicyEntryBuilder<T extends PolicyEntryBuilder> extends PolicyEntryBuilder<T> {
+public abstract class DestinationPolicyEntryBuilder<D extends DestinationPolicyEntryDef, T extends PolicyEntryBuilder>
+        extends PolicyEntryBuilder<D, T> {
 
-    private final boolean temporary;
-    private final String name;
     private final PolicyEntriesBuilder policyEntriesBuilder;
 
-    DestinationPolicyEntryBuilder(PolicyEntriesBuilder policyEntriesBuilder) {
+    DestinationPolicyEntryBuilder(D policyEntryDef, PolicyEntriesBuilder policyEntriesBuilder) {
+        super(policyEntryDef);
         assert (policyEntriesBuilder != null);
-        this.temporary = true;
-        this.name = null;
+        policyEntryDef.setTemporary(true);
+        policyEntryDef.setName(null);
         this.policyEntriesBuilder = policyEntriesBuilder;
     }
 
-    DestinationPolicyEntryBuilder(PolicyEntriesBuilder policyEntriesBuilder, String name) {
+    DestinationPolicyEntryBuilder(D policyEntryDef, PolicyEntriesBuilder policyEntriesBuilder, String name) {
+        super(policyEntryDef);
         assert (name != null);
         assert (policyEntriesBuilder != null);
-        this.temporary = false;
-        this.name = name;
+        policyEntryDef.setTemporary(false);
+        policyEntryDef.setName(name);
         this.policyEntriesBuilder = policyEntriesBuilder;
     }
 
@@ -45,11 +48,4 @@ public abstract class DestinationPolicyEntryBuilder<T extends PolicyEntryBuilder
         return policyEntriesBuilder;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public boolean getTemporary() {
-        return temporary;
-    }
 }

@@ -22,11 +22,12 @@ import org.apache.activemq.broker.dsl.model.DefaultPolicyEntryDef;
 /**
  * @author jkorab
  */
-public class DefaultPolicyEntryBuilder extends PolicyEntryBuilder<DefaultPolicyEntryBuilder> {
+public class DefaultPolicyEntryBuilder extends PolicyEntryBuilder<DefaultPolicyEntryDef, DefaultPolicyEntryBuilder> {
 
     private final PolicyMapBuilder policyMapBuilder;
 
     public DefaultPolicyEntryBuilder(PolicyMapBuilder policyMapBuilder) {
+        super(new DefaultPolicyEntryDef());
         assert (policyMapBuilder != null);
         this.policyMapBuilder = policyMapBuilder;
     }
@@ -35,7 +36,4 @@ public class DefaultPolicyEntryBuilder extends PolicyEntryBuilder<DefaultPolicyE
         return policyMapBuilder;
     }
 
-    public DefaultPolicyEntryDef build() {
-        return null; // TODO
-    }
 }

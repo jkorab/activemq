@@ -20,5 +20,24 @@ package org.apache.activemq.broker.dsl.model;
 /**
  * @author jkorab
  */
-public class DestinationPolicyEntryDef {
+public abstract class DestinationPolicyEntryDef extends PolicyEntryDef {
+
+    private Boolean temporary;
+    private String name;
+
+    public Boolean getTemporary() {
+        return temporary;
+    }
+
+    public void setTemporary(Boolean temporary) {
+        this.temporary = temporary;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

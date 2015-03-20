@@ -20,5 +20,5 @@ package org.apache.activemq.broker.dsl.model;
 /**
  * @author jkorab
  */
-public class TopicPolicyEntryDef {
+public class TopicPolicyEntryDef extends DestinationPolicyEntryDef {
 }

@@ -17,17 +17,19 @@
 
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.dsl.model.TopicPolicyEntryDef;
+
 /**
  * @author jkorab
  */
-public class TopicPolicyEntryBuilder extends DestinationPolicyEntryBuilder<TopicPolicyEntryBuilder> {
+public class TopicPolicyEntryBuilder extends DestinationPolicyEntryBuilder<TopicPolicyEntryDef, TopicPolicyEntryBuilder> {
 
     TopicPolicyEntryBuilder(PolicyEntriesBuilder policyEntriesBuilder, String name) {
-        super(policyEntriesBuilder, name);
+        super(new TopicPolicyEntryDef(), policyEntriesBuilder, name);
     }
 
     public TopicPolicyEntryBuilder(PolicyEntriesBuilder policyEntriesBuilder) {
-        super(policyEntriesBuilder);
+        super(new TopicPolicyEntryDef(), policyEntriesBuilder);
     }
 
 }
