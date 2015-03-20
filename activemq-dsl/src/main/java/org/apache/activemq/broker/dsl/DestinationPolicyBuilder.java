@@ -16,6 +16,8 @@
  */
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.dsl.model.DestinationPolicyDef;
+
 /**
  * @author jkorab
  */
@@ -42,4 +44,11 @@ public class DestinationPolicyBuilder {
         return policyMapBuilder;
     }
 
+    DestinationPolicyDef build() {
+        DestinationPolicyDef destinationPolicyDef = new DestinationPolicyDef();
+        if (policyMapBuilder != null) {
+            destinationPolicyDef.setPolicyMapDef(policyMapBuilder.build());
+        }
+        return destinationPolicyDef;
+    }
 }

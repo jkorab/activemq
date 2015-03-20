@@ -17,6 +17,10 @@
 
 package org.apache.activemq.broker.dsl.model;
 
+import org.apache.activemq.broker.TransportConnector;
+
+import java.util.List;
+
 /**
  * @author jkorab
  */
@@ -27,14 +31,10 @@ public class BrokerDef {
     private Boolean persistent = true;
 
     private DestinationPolicyDef destinationPolicyDef;
-
-    public DestinationPolicyDef getDestinationPolicyDef() {
-        return destinationPolicyDef;
-    }
-
-    public void setDestinationPolicyDef(DestinationPolicyDef destinationPolicyDef) {
-        this.destinationPolicyDef = destinationPolicyDef;
-    }
+    private ManagementContextDef managementContextDef;
+    private List<NetworkConnectorDef> networkConnectorDefs;
+    private PluginsDef pluginsDef;
+    private List<TransportConnectorDef> transportConnectorDefs;
 
     public String getBrokerName() {
         return brokerName;
@@ -42,6 +42,14 @@ public class BrokerDef {
 
     public void setBrokerName(String brokerName) {
         this.brokerName = brokerName;
+    }
+
+    public List<TransportConnectorDef> getTransportConnectorDefs() {
+        return transportConnectorDefs;
+    }
+
+    public void setTransportConnectorDefs(List<TransportConnectorDef> transportConnectorDefs) {
+        this.transportConnectorDefs = transportConnectorDefs;
     }
 
     public Boolean getUseJmx() {
@@ -58,5 +66,37 @@ public class BrokerDef {
 
     public void setPersistent(Boolean persistent) {
         this.persistent = persistent;
+    }
+
+    public DestinationPolicyDef getDestinationPolicyDef() {
+        return destinationPolicyDef;
+    }
+
+    public void setDestinationPolicyDef(DestinationPolicyDef destinationPolicyDef) {
+        this.destinationPolicyDef = destinationPolicyDef;
+    }
+
+    public ManagementContextDef getManagementContextDef() {
+        return managementContextDef;
+    }
+
+    public void setManagementContextDef(ManagementContextDef managementContextDef) {
+        this.managementContextDef = managementContextDef;
+    }
+
+    public List<NetworkConnectorDef> getNetworkConnectorDefs() {
+        return networkConnectorDefs;
+    }
+
+    public void setNetworkConnectorDefs(List<NetworkConnectorDef> networkConnectorDefs) {
+        this.networkConnectorDefs = networkConnectorDefs;
+    }
+
+    public PluginsDef getPluginsDef() {
+        return pluginsDef;
+    }
+
+    public void setPluginsDef(PluginsDef pluginsDef) {
+        this.pluginsDef = pluginsDef;
     }
 }

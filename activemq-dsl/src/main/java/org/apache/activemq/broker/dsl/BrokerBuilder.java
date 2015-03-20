@@ -16,32 +16,39 @@
  */
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.dsl.model.BrokerDef;
+
 /**
  * @author jkorab
  */
 public class BrokerBuilder {
 
-    private final String brokerName;
-    private boolean useJmx = false;
-    private boolean persistent = true;
     private DestinationPolicyBuilder destinationPolicyBuilder;
     private ManagementContextBuilder managementContextBuilder;
     private NetworkConnectorsBuilder networkConnectorsBuilder;
-    private TransportConnectorsBuilder transportConnectorsBuilder;
     private PluginsBuilder pluginsBuilder;
+    private TransportConnectorsBuilder transportConnectorsBuilder;
+
+    private BrokerDef brokerDef;
 
     BrokerBuilder(String brokerName) {
-        this.brokerName = brokerName;
+        brokerDef = new BrokerDef();
+        brokerDef.setBrokerName(brokerName);
     }
 
     public BrokerBuilder persistent(boolean persistent) {
-        this.persistent = persistent;
+        brokerDef.setPersistent(persistent);
         return this;
     }
 
     public BrokerBuilder useJmx(boolean useJmx) {
-        this.useJmx = useJmx;
+        brokerDef.setUseJmx(useJmx);
         return this;
+    }
+
+    public DestinationPolicyBuilder destinationPolicy() {
+        destinationPolicyBuilder = new DestinationPolicyBuilder(this);
+        return destinationPolicyBuilder;
     }
 
     public ManagementContextBuilder managementContext() {
@@ -54,50 +61,32 @@ public class BrokerBuilder {
         return networkConnectorsBuilder;
     }
 
-    public TransportConnectorsBuilder transportConnectors() {
-        transportConnectorsBuilder = new TransportConnectorsBuilder(this);
-        return transportConnectorsBuilder;
-    }
-
-    public boolean isPersistent() {
-        return persistent;
-    }
-
-    public boolean isUseJmx() {
-        return useJmx;
-    }
-
-    public String getBrokerName() {
-        return brokerName;
-    }
-
-    public ManagementContextBuilder getManagementContextBuilder() {
-        return managementContextBuilder;
-    }
-
-    public NetworkConnectorsBuilder getNetworkConnectorsBuilder() {
-        return networkConnectorsBuilder;
-    }
-
-    public TransportConnectorsBuilder getTransportConnectorsBuilder() {
-        return transportConnectorsBuilder;
-    }
-
     public PluginsBuilder plugins() {
         pluginsBuilder = new PluginsBuilder(this);
         return pluginsBuilder;
     }
 
-    public PluginsBuilder getPluginsBuilder() {
-        return pluginsBuilder;
+    public TransportConnectorsBuilder transportConnectors() {
+        transportConnectorsBuilder = new TransportConnectorsBuilder(this);
+        return transportConnectorsBuilder;
     }
 
-    public DestinationPolicyBuilder destinationPolicy() {
-        destinationPolicyBuilder = new DestinationPolicyBuilder(this);
-        return destinationPolicyBuilder;
-    }
-
-    public DestinationPolicyBuilder getDestinationPolicyBuilder() {
-        return destinationPolicyBuilder;
+    public BrokerDef build() {
+        if (destinationPolicyBuilder != null) {
+            brokerDef.setDestinationPolicyDef(destinationPolicyBuilder.build());
+        }
+        if (managementContextBuilder != null) {
+            brokerDef.setManagementContextDef(managementContextBuilder.build());
+        }
+        if (networkConnectorsBuilder != null) {
+            brokerDef.setNetworkConnectorDefs(networkConnectorsBuilder.build());
+        }
+        if (pluginsBuilder != null) {
+            brokerDef.setPluginsDef(pluginsBuilder.build());
+        }
+        if (transportConnectorsBuilder != null) {
+            brokerDef.setTransportConnectorDefs(transportConnectorsBuilder.build());
+        }
+        return brokerDef;
     }
 }

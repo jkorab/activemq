@@ -16,6 +16,8 @@
  */
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.dsl.model.PluginsDef;
+
 /**
  * @author jkorab
  */
@@ -41,5 +43,9 @@ public class PluginsBuilder {
 
     public SimpleAuthenticationPluginBuilder getSimpleAuthenticationPluginBuilder() {
         return simpleAuthenticationPluginBuilder;
+    }
+
+    public PluginsDef build() {
+        return null; // TODO
     }
 }

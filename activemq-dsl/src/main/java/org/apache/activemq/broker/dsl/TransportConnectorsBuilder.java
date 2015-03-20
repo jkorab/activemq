@@ -16,9 +16,11 @@
  */
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.dsl.model.TransportConnectorDef;
 import org.apache.commons.lang.Validate;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -53,5 +55,9 @@ public class TransportConnectorsBuilder {
 
     public Collection<TransportConnectorBuilder> getTransportConnectorDefinitions() {
         return transportConnectorBuilderMap.values();
+    }
+
+    public List<TransportConnectorDef> build() {
+        return null; // TODO
     }
 }

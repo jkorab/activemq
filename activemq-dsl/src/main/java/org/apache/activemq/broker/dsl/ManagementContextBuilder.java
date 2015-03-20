@@ -16,6 +16,8 @@
  */
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.dsl.model.ManagementContextDef;
+
 /**
  * @author jkorab
  */
@@ -40,5 +42,9 @@ public class ManagementContextBuilder {
 
     public ManagementContext1Builder getManagementContext1Builder() {
         return managementContext1Builder;
+    }
+
+    public ManagementContextDef build() {
+        return null; // TODO
     }
 }
