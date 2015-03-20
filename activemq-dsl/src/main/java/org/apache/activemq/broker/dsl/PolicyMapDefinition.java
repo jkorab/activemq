@@ -44,11 +44,11 @@ public class PolicyMapDefinition {
         return destinationPolicyDefinition;
     }
 
-    PolicyEntriesDefinition getPolicyEntriesDefinition() {
+    public PolicyEntriesDefinition getPolicyEntriesDefinition() {
         return policyEntriesDefinition;
     }
 
-    DefaultPolicyEntryDefinition getDefaultPolicyEntryDefinition() {
+    public DefaultPolicyEntryDefinition getDefaultPolicyEntryDefinition() {
         return defaultPolicyEntryDefinition;
     }
 }

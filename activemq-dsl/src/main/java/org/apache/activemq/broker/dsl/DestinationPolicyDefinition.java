@@ -38,7 +38,7 @@ public class DestinationPolicyDefinition {
         return brokerDefinition;
     }
 
-    PolicyMapDefinition getPolicyMapDefinition() {
+    public PolicyMapDefinition getPolicyMapDefinition() {
         return policyMapDefinition;
     }
 

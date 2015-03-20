@@ -53,15 +53,15 @@ public class AuthenticationUserDefinition {
         return usersDefinition;
     }
 
-    String getGroups() {
+    public String getGroups() {
         return groups;
     }
 
-    String getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    String getUsername() {
+    public String getUsername() {
         return username;
     }
 }

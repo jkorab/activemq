@@ -55,7 +55,7 @@ public class NetworkConnectorDefinition {
         return name;
     }
 
-    String getUri() {
+    public String getUri() {
         return uri;
     }
 }

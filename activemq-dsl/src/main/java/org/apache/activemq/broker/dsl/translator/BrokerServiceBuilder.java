@@ -14,11 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.activemq.broker.dsl;
+package org.apache.activemq.broker.dsl.translator;
 
 import org.apache.activemq.broker.BrokerPlugin;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.broker.TransportConnector;
+import org.apache.activemq.broker.dsl.*;
 import org.apache.activemq.broker.jmx.ManagementContext;
 import org.apache.activemq.broker.region.policy.PolicyEntry;
 import org.apache.activemq.broker.region.policy.PolicyMap;
@@ -26,23 +27,20 @@ import org.apache.activemq.network.DiscoveryNetworkConnector;
 import org.apache.activemq.network.NetworkConnector;
 import org.apache.activemq.security.AuthenticationUser;
 import org.apache.activemq.security.SimpleAuthenticationPlugin;
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.PropertyUtils;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Builder class used to construct a BrokerService from a {@link BrokerDefinition}.
+ * Builder class used to construct a BrokerService from a {@link org.apache.activemq.broker.dsl.BrokerDefinition}.
  *
  * @author jkorab
  */
-class BrokerServiceBuilder {
+public class BrokerServiceBuilder {
 
-    BrokerService build(BrokerDefinition brokerDefinition) {
+    public BrokerService build(BrokerDefinition brokerDefinition) {
         BrokerService brokerService = new BrokerService();
         brokerService.setBrokerName(brokerDefinition.getBrokerName());
         brokerService.setUseJmx(brokerDefinition.isUseJmx());

@@ -17,6 +17,7 @@
 package org.apache.activemq.broker.dsl;
 
 import org.apache.activemq.broker.BrokerService;
+import org.apache.activemq.broker.dsl.translator.BrokerServiceBuilder;
 import org.apache.commons.lang.Validate;
 
 import java.util.Collection;

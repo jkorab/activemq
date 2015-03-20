@@ -45,11 +45,11 @@ public abstract class DestinationPolicyEntryDefinition<T extends PolicyEntryDefi
         return policyEntriesDefinition;
     }
 
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    boolean getTemporary() {
+    public boolean getTemporary() {
         return temporary;
     }
 }

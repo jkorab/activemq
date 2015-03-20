@@ -73,35 +73,35 @@ public abstract class PolicyEntryDefinition <T extends PolicyEntryDefinition> {
         return (T) this;
     }
 
-    Boolean getAdvisoryForFastProducers() {
+    public Boolean getAdvisoryForFastProducers() {
         return advisoryForFastProducers;
     }
 
-    Boolean getAdvisoryForConsumed() {
+    public Boolean getAdvisoryForConsumed() {
         return advisoryForConsumed;
     }
 
-    Boolean getAdvisoryForDelivery() {
+    public Boolean getAdvisoryForDelivery() {
         return advisoryForDelivery;
     }
 
-    Boolean getAdvisoryForDiscardingMessages() {
+    public Boolean getAdvisoryForDiscardingMessages() {
         return advisoryForDiscardingMessages;
     }
 
-    Boolean getAdvisoryForSlowConsumers() {
+    public Boolean getAdvisoryForSlowConsumers() {
         return advisoryForSlowConsumers;
     }
 
-    Boolean getAdvisoryWhenFull() {
+    public Boolean getAdvisoryWhenFull() {
         return advisoryWhenFull;
     }
 
-    Boolean getProducerFlowControl() {
+    public Boolean getProducerFlowControl() {
         return producerFlowControl;
     }
 
-    PendingMessageLimitStrategy getPendingMessageLimitStrategy() {
+    public PendingMessageLimitStrategy getPendingMessageLimitStrategy() {
         return pendingMessageLimitStrategy;
     }
 

@@ -42,7 +42,7 @@ public class PolicyEntriesDefinition {
         return policyMapDefinition;
     }
 
-    List<PolicyEntryDefinition> getPolicyEntryDefinitions() {
+    public List<PolicyEntryDefinition> getPolicyEntryDefinitions() {
         List<PolicyEntryDefinition> policyEntryDefinitions = new ArrayList<>();
         for (IndirectPolicyEntryDefinition indirect : indirectPolicyEntryDefinitions) {
             policyEntryDefinitions.add(indirect.getPolicyEntryDefinition());

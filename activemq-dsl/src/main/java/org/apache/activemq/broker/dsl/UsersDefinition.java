@@ -47,7 +47,7 @@ public class UsersDefinition {
         return simpleAuthenticationPluginDefinition;
     }
 
-    List<AuthenticationUserDefinition> getAuthenticationUserDefinitions() {
+    public List<AuthenticationUserDefinition> getAuthenticationUserDefinitions() {
         return authenticationUserDefinitions;
     }
 }

@@ -59,23 +59,23 @@ public class BrokerDefinition {
         return transportConnectorsDefinition;
     }
 
-    boolean isPersistent() {
+    public boolean isPersistent() {
         return persistent;
     }
 
-    boolean isUseJmx() {
+    public boolean isUseJmx() {
         return useJmx;
     }
 
-    String getBrokerName() {
+    public String getBrokerName() {
         return brokerName;
     }
 
-    ManagementContextDefinition getManagementContextDefinition() {
+    public ManagementContextDefinition getManagementContextDefinition() {
         return managementContextDefinition;
     }
 
-    NetworkConnectorsDefinition getNetworkConnectorsDefinition() {
+    public NetworkConnectorsDefinition getNetworkConnectorsDefinition() {
         return networkConnectorsDefinition;
     }
 
@@ -88,7 +88,7 @@ public class BrokerDefinition {
         return pluginsDefinition;
     }
 
-    PluginsDefinition getPluginsDefinition() {
+    public PluginsDefinition getPluginsDefinition() {
         return pluginsDefinition;
     }
 
@@ -97,7 +97,7 @@ public class BrokerDefinition {
         return destinationPolicyDefinition;
     }
 
-    DestinationPolicyDefinition getDestinationPolicyDefinition() {
+    public DestinationPolicyDefinition getDestinationPolicyDefinition() {
         return destinationPolicyDefinition;
     }
 }

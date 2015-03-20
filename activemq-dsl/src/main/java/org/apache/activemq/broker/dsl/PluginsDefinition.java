@@ -39,7 +39,7 @@ public class PluginsDefinition {
         return brokerDefinition;
     }
 
-    SimpleAuthenticationPluginDefinition getSimpleAuthenticationPluginDefinition() {
+    public SimpleAuthenticationPluginDefinition getSimpleAuthenticationPluginDefinition() {
         return simpleAuthenticationPluginDefinition;
     }
 }

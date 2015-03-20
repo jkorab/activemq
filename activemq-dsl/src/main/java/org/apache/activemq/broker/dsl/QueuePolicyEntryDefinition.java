@@ -36,7 +36,7 @@ public class QueuePolicyEntryDefinition extends DestinationPolicyEntryDefinition
         return this;
     }
 
-    int getExpireMessagesPeriod() {
+    public int getExpireMessagesPeriod() {
         return expireMessagesPeriod;
     }
 }

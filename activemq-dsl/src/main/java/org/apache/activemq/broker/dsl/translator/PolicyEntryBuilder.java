@@ -15,8 +15,11 @@
  * limitations under the License.
  */
 
-package org.apache.activemq.broker.dsl;
+package org.apache.activemq.broker.dsl.translator;
 
+import org.apache.activemq.broker.dsl.DestinationPolicyEntryDefinition;
+import org.apache.activemq.broker.dsl.PolicyEntryDefinition;
+import org.apache.activemq.broker.dsl.QueuePolicyEntryDefinition;
 import org.apache.activemq.broker.region.policy.PolicyEntry;
 import org.apache.commons.lang.Validate;
 

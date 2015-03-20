@@ -51,7 +51,7 @@ public class NetworkConnectorsDefinition {
         return brokerDefinition;
     }
 
-    Collection<NetworkConnectorDefinition> getNetworkConnectorDefinitions() {
+    public Collection<NetworkConnectorDefinition> getNetworkConnectorDefinitions() {
         return networkConnectorDefinitionMap.values();
     }
 }

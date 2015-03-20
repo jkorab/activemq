@@ -39,7 +39,7 @@ public class SimpleAuthenticationPluginDefinition {
         return pluginsDefinition;
     }
 
-    UsersDefinition getUsersDefinition() {
+    public UsersDefinition getUsersDefinition() {
         return usersDefinition;
     }
 }

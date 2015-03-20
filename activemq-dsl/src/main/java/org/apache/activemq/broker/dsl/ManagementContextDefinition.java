@@ -38,7 +38,7 @@ public class ManagementContextDefinition {
         return brokerDefinition;
     }
 
-    ManagementContext1Definition getManagementContext1Definition() {
+    public ManagementContext1Definition getManagementContext1Definition() {
         return managementContext1Definition;
     }
 }
