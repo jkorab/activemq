@@ -17,8 +17,6 @@
 
 package org.apache.activemq.broker.dsl.model;
 
-import org.apache.activemq.broker.TransportConnector;
-
 import java.util.List;
 
 /**

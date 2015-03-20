@@ -17,7 +17,6 @@
 package org.apache.activemq.broker.dsl;
 
 import org.apache.activemq.broker.dsl.model.AuthenticationUserDef;
-import org.apache.activemq.broker.dsl.model.UsersDef;
 import org.apache.commons.lang.Validate;
 
 import java.util.ArrayList;

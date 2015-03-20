@@ -22,7 +22,6 @@ import org.apache.activemq.broker.dsl.model.TransportConnectorDef;
 import org.apache.activemq.broker.dsl.translator.BrokerServiceTranslator;
 import org.apache.commons.lang.Validate;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;

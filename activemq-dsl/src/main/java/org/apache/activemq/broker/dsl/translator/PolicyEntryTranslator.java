@@ -18,8 +18,8 @@
 package org.apache.activemq.broker.dsl.translator;
 
 import org.apache.activemq.broker.dsl.model.DestinationPolicyEntryDef;
-import org.apache.activemq.broker.dsl.model.QueuePolicyEntryDef;
 import org.apache.activemq.broker.dsl.model.PolicyEntryDef;
+import org.apache.activemq.broker.dsl.model.QueuePolicyEntryDef;
 import org.apache.activemq.broker.region.policy.PolicyEntry;
 import org.apache.commons.lang.Validate;
 

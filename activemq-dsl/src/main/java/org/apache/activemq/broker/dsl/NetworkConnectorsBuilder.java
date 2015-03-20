@@ -19,7 +19,10 @@ package org.apache.activemq.broker.dsl;
 import org.apache.activemq.broker.dsl.model.NetworkConnectorDef;
 import org.apache.commons.lang.Validate;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * @author jkorab

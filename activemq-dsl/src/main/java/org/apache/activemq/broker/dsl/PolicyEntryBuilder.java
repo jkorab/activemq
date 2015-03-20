@@ -16,7 +16,6 @@
  */
 package org.apache.activemq.broker.dsl;
 
-import org.apache.activemq.broker.dsl.model.DefaultPolicyEntryDef;
 import org.apache.activemq.broker.dsl.model.PolicyEntryDef;
 import org.apache.activemq.broker.region.policy.PendingMessageLimitStrategy;
 
