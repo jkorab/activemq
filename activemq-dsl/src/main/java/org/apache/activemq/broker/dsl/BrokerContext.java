@@ -17,7 +17,9 @@
 package org.apache.activemq.broker.dsl;
 
 import org.apache.activemq.broker.BrokerService;
-import org.apache.activemq.broker.dsl.translator.BrokerServiceBuilder;
+import org.apache.activemq.broker.dsl.model.BrokerDef;
+import org.apache.activemq.broker.dsl.model.TransportConnectorDef;
+import org.apache.activemq.broker.dsl.translator.BrokerServiceTranslator;
 import org.apache.commons.lang.Validate;
 
 import java.util.Collection;
@@ -34,14 +36,16 @@ public class BrokerContext {
 
     private final BrokerBuilder brokerBuilder;
     private BrokerService brokerService;
+    private BrokerDef brokerDef;
 
     public BrokerContext(BrokerBuilder brokerBuilder) {
-        Validate.notNull(brokerBuilder, "brokerDefinition is null");
+        Validate.notNull(brokerBuilder, "brokerBuilder is null");
         this.brokerBuilder = brokerBuilder;
     }
 
     public void start() {
-        brokerService = new BrokerServiceBuilder().build(brokerBuilder);
+        brokerDef = brokerBuilder.build();
+        brokerService = new BrokerServiceTranslator().translate(brokerDef);
         try {
             brokerService.start();
         } catch (Exception e) {
@@ -89,23 +93,19 @@ public class BrokerContext {
     }
 
     /**
-     * Gets the name of the openwire connector defined on this broker. The first connector whose scheme contains either
+     * Gets the name of the openwire connector defined on this broker. The first connector whose scheme starts with
      * tcp or nio is returned.
      * @return A transport connector name, or null.
      */
     public String getOpenwireConnectorName() {
-        TransportConnectorsBuilder transportConnectorsBuilder = brokerBuilder.getTransportConnectorsBuilder();
-        if (transportConnectorsBuilder == null) {
-            return null;
+        if (brokerDef == null) {
+            throw new IllegalStateException("BrokerContext is not started");
         }
-
-        Collection<TransportConnectorBuilder> transportConnectorBuilders =
-                transportConnectorsBuilder.getTransportConnectorDefinitions();
         String connectorName = null;
-        for (TransportConnectorBuilder transportConnectorBuilder : transportConnectorBuilders) {
-            String uri = transportConnectorBuilder.getUri();
-            if (uri.contains("tcp") || (uri.contains("nio"))) {
-                connectorName = transportConnectorBuilder.getName();
+        for (TransportConnectorDef transportConnectorDef : brokerDef.getTransportConnectorDefs()) {
+            String uri = transportConnectorDef.getUri();
+            if (uri.startsWith("tcp") || (uri.startsWith("nio"))) {
+                connectorName = transportConnectorDef.getName();
                 break;
             }
         }

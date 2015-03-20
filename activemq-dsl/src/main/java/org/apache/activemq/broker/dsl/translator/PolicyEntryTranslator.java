@@ -17,42 +17,43 @@
 
 package org.apache.activemq.broker.dsl.translator;
 
-import org.apache.activemq.broker.dsl.DestinationPolicyEntryBuilder;
-import org.apache.activemq.broker.dsl.QueuePolicyEntryBuilder;
+import org.apache.activemq.broker.dsl.model.DestinationPolicyEntryDef;
+import org.apache.activemq.broker.dsl.model.QueuePolicyEntryDef;
+import org.apache.activemq.broker.dsl.model.PolicyEntryDef;
 import org.apache.activemq.broker.region.policy.PolicyEntry;
 import org.apache.commons.lang.Validate;
 
 /**
  * @author jkorab
  */
-class PolicyEntryBuilder {
+class PolicyEntryTranslator {
 
-    PolicyEntry build(org.apache.activemq.broker.dsl.PolicyEntryBuilder definition) {
-        Validate.notNull(definition, "definition is null");
+    PolicyEntry translate(PolicyEntryDef policyEntryDef) {
+        Validate.notNull(policyEntryDef, "definition is null");
 
         PolicyEntry policyEntry = new PolicyEntry();
-        policyEntry.setAdvisoryForFastProducers(safe(definition.getAdvisoryForFastProducers()));
-        policyEntry.setAdvisoryForConsumed(safe(definition.getAdvisoryForConsumed()));
-        policyEntry.setAdvisoryForDelivery(safe(definition.getAdvisoryForDelivery()));
-        policyEntry.setAdvisoryForDiscardingMessages(safe(definition.getAdvisoryForDiscardingMessages()));
-        policyEntry.setAdvisoryForSlowConsumers(safe(definition.getAdvisoryForSlowConsumers()));
-        policyEntry.setAdvisoryWhenFull(safe(definition.getAdvisoryWhenFull()));
-        policyEntry.setProducerFlowControl(safe(definition.getProducerFlowControl()));
+        policyEntry.setAdvisoryForFastProducers(safe(policyEntryDef.getAdvisoryForFastProducers()));
+        policyEntry.setAdvisoryForConsumed(safe(policyEntryDef.getAdvisoryForConsumed()));
+        policyEntry.setAdvisoryForDelivery(safe(policyEntryDef.getAdvisoryForDelivery()));
+        policyEntry.setAdvisoryForDiscardingMessages(safe(policyEntryDef.getAdvisoryForDiscardingMessages()));
+        policyEntry.setAdvisoryForSlowConsumers(safe(policyEntryDef.getAdvisoryForSlowConsumers()));
+        policyEntry.setAdvisoryWhenFull(safe(policyEntryDef.getAdvisoryWhenFull()));
+        policyEntry.setProducerFlowControl(safe(policyEntryDef.getProducerFlowControl()));
 
-        policyEntry.setPendingMessageLimitStrategy(definition.getPendingMessageLimitStrategy());
+        policyEntry.setPendingMessageLimitStrategy(policyEntryDef.getPendingMessageLimitStrategy());
 
-        if (definition instanceof DestinationPolicyEntryBuilder) {
-                applyDestinationFields(policyEntry, (DestinationPolicyEntryBuilder) definition);
+        if (policyEntryDef instanceof DestinationPolicyEntryDef) {
+                applyDestinationFields(policyEntry, (DestinationPolicyEntryDef) policyEntryDef);
         }
         return policyEntry;
     }
 
-    private void applyDestinationFields(PolicyEntry policyEntry, DestinationPolicyEntryBuilder definition) {
+    private void applyDestinationFields(PolicyEntry policyEntry, DestinationPolicyEntryDef definition) {
         assert (policyEntry != null);
         assert (definition != null);
 
-        if (definition instanceof QueuePolicyEntryBuilder) {
-            applyQueueFields(policyEntry, (QueuePolicyEntryBuilder) definition);
+        if (definition instanceof QueuePolicyEntryDef) {
+            applyQueueFields(policyEntry, (QueuePolicyEntryDef) definition);
         } else {
             if (definition.getTemporary()) {
                 policyEntry.setTempTopic(true);
@@ -60,7 +61,7 @@ class PolicyEntryBuilder {
         }
     }
 
-    private void applyQueueFields(PolicyEntry policyEntry, QueuePolicyEntryBuilder definition) {
+    private void applyQueueFields(PolicyEntry policyEntry, QueuePolicyEntryDef definition) {
         assert (policyEntry != null);
         assert (definition != null);
 
