@@ -21,4 +21,32 @@ package org.apache.activemq.broker.dsl.model;
  * @author jkorab
  */
 public class NetworkConnectorDef {
+
+    private String name;
+    private String uri;
+    private Integer networkTTL;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public Integer getNetworkTTL() {
+        return networkTTL;
+    }
+
+    public void setNetworkTTL(Integer networkTTL) {
+        this.networkTTL = networkTTL;
+    }
 }

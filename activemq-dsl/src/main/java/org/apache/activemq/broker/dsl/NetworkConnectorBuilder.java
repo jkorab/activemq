@@ -16,32 +16,36 @@
  */
 package org.apache.activemq.broker.dsl;
 
+import org.apache.activemq.broker.dsl.model.NetworkConnectorDef;
+
 /**
  * @author jkorab
  */
 public class NetworkConnectorBuilder {
 
     private final NetworkConnectorsBuilder networkConnectorsBuilder;
-    private final String name;
-    private final String uri;
-    private Integer networkTTL;
+    private final NetworkConnectorDef networkConnectorDef;
 
     NetworkConnectorBuilder(NetworkConnectorsBuilder networkConnectorsBuilder, String name, String uri) {
         assert (networkConnectorsBuilder != null);
         assert (name != null);
         assert (uri != null);
 
-        this.uri = uri;
-        this.name = name;
         this.networkConnectorsBuilder = networkConnectorsBuilder;
+        this.networkConnectorDef = new NetworkConnectorDef();
+        networkConnectorDef.setUri(uri);
+        networkConnectorDef.setName(name);
     }
 
     public NetworkConnectorBuilder networkTTL(int networkTTL) {
-        this.networkTTL = networkTTL;
+        networkConnectorDef.setNetworkTTL(networkTTL);
         return this;
     }
 
 
+    /**
+     * TODO
+     */
     public DestinationsDefinition staticallyIncludedDestinations() {
         DestinationsDefinition destinationsDefinition = new DestinationsDefinition(this);
         return destinationsDefinition;
@@ -51,11 +55,7 @@ public class NetworkConnectorBuilder {
         return networkConnectorsBuilder;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getUri() {
-        return uri;
+    public NetworkConnectorDef build() {
+        return networkConnectorDef;
     }
 }

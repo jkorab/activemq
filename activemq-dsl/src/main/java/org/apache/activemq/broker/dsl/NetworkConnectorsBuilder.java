@@ -19,10 +19,7 @@ package org.apache.activemq.broker.dsl;
 import org.apache.activemq.broker.dsl.model.NetworkConnectorDef;
 import org.apache.commons.lang.Validate;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * @author jkorab
@@ -53,11 +50,12 @@ public class NetworkConnectorsBuilder {
         return brokerBuilder;
     }
 
-    public Collection<NetworkConnectorBuilder> getNetworkConnectorDefinitions() {
-        return networkConnectorDefinitionMap.values();
-    }
 
     public List<NetworkConnectorDef> build() {
-        return null;
+        List<NetworkConnectorDef> networkConnectorDefs = new ArrayList<>();
+        for (NetworkConnectorBuilder networkConnectorBuilder : networkConnectorDefinitionMap.values()) {
+            networkConnectorDefs.add(networkConnectorBuilder.build());
+        }
+        return networkConnectorDefs;
     }
 }
