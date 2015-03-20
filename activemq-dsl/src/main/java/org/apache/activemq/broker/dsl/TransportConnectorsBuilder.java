@@ -25,33 +25,33 @@ import java.util.TreeMap;
 /**
  * @author jkorab
  */
-public class TransportConnectorsDefinition {
+public class TransportConnectorsBuilder {
 
-    private final BrokerDefinition brokerDefinition;
-    private Map<String, TransportConnectorDefinition> transportConnectorDefinitionMap = new TreeMap<>();
+    private final BrokerBuilder brokerBuilder;
+    private Map<String, TransportConnectorBuilder> transportConnectorBuilderMap = new TreeMap<>();
 
-    TransportConnectorsDefinition(BrokerDefinition brokerDefinition) {
-        assert (brokerDefinition != null);
-        this.brokerDefinition = brokerDefinition;
+    TransportConnectorsBuilder(BrokerBuilder brokerBuilder) {
+        assert (brokerBuilder != null);
+        this.brokerBuilder = brokerBuilder;
     }
 
-    public TransportConnectorDefinition transportConnector(String name, String uri) {
+    public TransportConnectorBuilder transportConnector(String name, String uri) {
         Validate.notEmpty(name, "name is empty");
         Validate.notEmpty(uri, "uri is empty");
 
-        if (transportConnectorDefinitionMap.containsKey(name)) {
+        if (transportConnectorBuilderMap.containsKey(name)) {
             throw new IllegalArgumentException("Transport connector named " + name + "already defined");
         }
-        TransportConnectorDefinition transportConnectorDefinition = new TransportConnectorDefinition(this, name, uri);
-        transportConnectorDefinitionMap.put(name, transportConnectorDefinition);
-        return transportConnectorDefinition;
+        TransportConnectorBuilder transportConnectorBuilder = new TransportConnectorBuilder(this, name, uri);
+        transportConnectorBuilderMap.put(name, transportConnectorBuilder);
+        return transportConnectorBuilder;
     }
 
-    public BrokerDefinition end() {
-        return brokerDefinition;
+    public BrokerBuilder end() {
+        return brokerBuilder;
     }
 
-    public Collection<TransportConnectorDefinition> getTransportConnectorDefinitions() {
-        return transportConnectorDefinitionMap.values();
+    public Collection<TransportConnectorBuilder> getTransportConnectorDefinitions() {
+        return transportConnectorBuilderMap.values();
     }
 }

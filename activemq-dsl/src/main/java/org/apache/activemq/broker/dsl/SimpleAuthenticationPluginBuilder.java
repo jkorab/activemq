@@ -19,31 +19,27 @@ package org.apache.activemq.broker.dsl;
 /**
  * @author jkorab
  */
-public class TransportConnectorDefinition {
+public class SimpleAuthenticationPluginBuilder {
 
-    private final TransportConnectorsDefinition transportConnectorsDefinition;
-    private final String name;
-    private final String uri;
+    private final PluginsBuilder pluginsBuilder;
+    private UsersBuilder usersBuilder;
 
-    public TransportConnectorDefinition(TransportConnectorsDefinition transportConnectorsDefinition, String name, String uri) {
-        assert (transportConnectorsDefinition != null);
-        assert (name != null);
-        assert (uri != null);
-
-        this.uri = uri;
-        this.name = name;
-        this.transportConnectorsDefinition = transportConnectorsDefinition;
+    SimpleAuthenticationPluginBuilder(PluginsBuilder pluginsBuilder) {
+        assert (pluginsBuilder != null);
+        this.pluginsBuilder = pluginsBuilder;
     }
 
-    public TransportConnectorsDefinition end() {
-        return transportConnectorsDefinition;
+
+    public UsersBuilder users() {
+        usersBuilder = new UsersBuilder(this);
+        return usersBuilder;
     }
 
-    public String getName() {
-        return name;
+    public PluginsBuilder end() {
+        return pluginsBuilder;
     }
 
-    public String getUri() {
-        return uri;
+    public UsersBuilder getUsersBuilder() {
+        return usersBuilder;
     }
 }

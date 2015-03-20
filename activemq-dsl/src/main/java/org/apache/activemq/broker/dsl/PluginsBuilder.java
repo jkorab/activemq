@@ -19,27 +19,27 @@ package org.apache.activemq.broker.dsl;
 /**
  * @author jkorab
  */
-public class PluginsDefinition {
+public class PluginsBuilder {
 
-    private final BrokerDefinition brokerDefinition;
-    private SimpleAuthenticationPluginDefinition simpleAuthenticationPluginDefinition;
+    private final BrokerBuilder brokerBuilder;
+    private SimpleAuthenticationPluginBuilder simpleAuthenticationPluginBuilder;
 
-    PluginsDefinition(BrokerDefinition brokerDefinition) {
-        assert (brokerDefinition != null);
-        this.brokerDefinition = brokerDefinition;
+    PluginsBuilder(BrokerBuilder brokerBuilder) {
+        assert (brokerBuilder != null);
+        this.brokerBuilder = brokerBuilder;
     }
 
 
-    public SimpleAuthenticationPluginDefinition simpleAuthenticationPlugin() {
-        simpleAuthenticationPluginDefinition = new SimpleAuthenticationPluginDefinition(this);
-        return simpleAuthenticationPluginDefinition;
+    public SimpleAuthenticationPluginBuilder simpleAuthenticationPlugin() {
+        simpleAuthenticationPluginBuilder = new SimpleAuthenticationPluginBuilder(this);
+        return simpleAuthenticationPluginBuilder;
     }
 
-    public BrokerDefinition end() {
-        return brokerDefinition;
+    public BrokerBuilder end() {
+        return brokerBuilder;
     }
 
-    public SimpleAuthenticationPluginDefinition getSimpleAuthenticationPluginDefinition() {
-        return simpleAuthenticationPluginDefinition;
+    public SimpleAuthenticationPluginBuilder getSimpleAuthenticationPluginBuilder() {
+        return simpleAuthenticationPluginBuilder;
     }
 }

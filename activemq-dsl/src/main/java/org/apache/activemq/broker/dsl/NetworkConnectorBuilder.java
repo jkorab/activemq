@@ -19,24 +19,24 @@ package org.apache.activemq.broker.dsl;
 /**
  * @author jkorab
  */
-public class NetworkConnectorDefinition {
+public class NetworkConnectorBuilder {
 
-    private final NetworkConnectorsDefinition networkConnectorsDefinition;
+    private final NetworkConnectorsBuilder networkConnectorsBuilder;
     private final String name;
     private final String uri;
     private Integer networkTTL;
 
-    NetworkConnectorDefinition(NetworkConnectorsDefinition networkConnectorsDefinition, String name, String uri) {
-        assert (networkConnectorsDefinition != null);
+    NetworkConnectorBuilder(NetworkConnectorsBuilder networkConnectorsBuilder, String name, String uri) {
+        assert (networkConnectorsBuilder != null);
         assert (name != null);
         assert (uri != null);
 
         this.uri = uri;
         this.name = name;
-        this.networkConnectorsDefinition = networkConnectorsDefinition;
+        this.networkConnectorsBuilder = networkConnectorsBuilder;
     }
 
-    public NetworkConnectorDefinition networkTTL(int networkTTL) {
+    public NetworkConnectorBuilder networkTTL(int networkTTL) {
         this.networkTTL = networkTTL;
         return this;
     }
@@ -47,8 +47,8 @@ public class NetworkConnectorDefinition {
         return destinationsDefinition;
     }
 
-    public NetworkConnectorsDefinition end() {
-        return networkConnectorsDefinition;
+    public NetworkConnectorsBuilder end() {
+        return networkConnectorsBuilder;
     }
 
     public String getName() {

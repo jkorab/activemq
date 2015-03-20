@@ -32,16 +32,16 @@ import java.util.concurrent.TimeUnit;
  */
 public class BrokerContext {
 
-    private final BrokerDefinition brokerDefinition;
+    private final BrokerBuilder brokerBuilder;
     private BrokerService brokerService;
 
-    public BrokerContext(BrokerDefinition brokerDefinition) {
-        Validate.notNull(brokerDefinition, "brokerDefinition is null");
-        this.brokerDefinition = brokerDefinition;
+    public BrokerContext(BrokerBuilder brokerBuilder) {
+        Validate.notNull(brokerBuilder, "brokerDefinition is null");
+        this.brokerBuilder = brokerBuilder;
     }
 
     public void start() {
-        brokerService = new BrokerServiceBuilder().build(brokerDefinition);
+        brokerService = new BrokerServiceBuilder().build(brokerBuilder);
         try {
             brokerService.start();
         } catch (Exception e) {
@@ -94,18 +94,18 @@ public class BrokerContext {
      * @return A transport connector name, or null.
      */
     public String getOpenwireConnectorName() {
-        TransportConnectorsDefinition transportConnectorsDefinition = brokerDefinition.getTransportConnectorsDefinition();
-        if (transportConnectorsDefinition == null) {
+        TransportConnectorsBuilder transportConnectorsBuilder = brokerBuilder.getTransportConnectorsBuilder();
+        if (transportConnectorsBuilder == null) {
             return null;
         }
 
-        Collection<TransportConnectorDefinition> transportConnectorDefinitions =
-                transportConnectorsDefinition.getTransportConnectorDefinitions();
+        Collection<TransportConnectorBuilder> transportConnectorBuilders =
+                transportConnectorsBuilder.getTransportConnectorDefinitions();
         String connectorName = null;
-        for (TransportConnectorDefinition transportConnectorDefinition : transportConnectorDefinitions) {
-            String uri = transportConnectorDefinition.getUri();
+        for (TransportConnectorBuilder transportConnectorBuilder : transportConnectorBuilders) {
+            String uri = transportConnectorBuilder.getUri();
             if (uri.contains("tcp") || (uri.contains("nio"))) {
-                connectorName = transportConnectorDefinition.getName();
+                connectorName = transportConnectorBuilder.getName();
                 break;
             }
         }

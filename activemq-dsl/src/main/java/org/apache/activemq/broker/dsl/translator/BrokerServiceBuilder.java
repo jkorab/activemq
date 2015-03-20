@@ -34,42 +34,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Builder class used to construct a BrokerService from a {@link org.apache.activemq.broker.dsl.BrokerDefinition}.
+ * Builder class used to construct a BrokerService from a {@link org.apache.activemq.broker.dsl.BrokerBuilder}.
  *
  * @author jkorab
  */
 public class BrokerServiceBuilder {
 
-    public BrokerService build(BrokerDefinition brokerDefinition) {
+    public BrokerService build(BrokerBuilder brokerBuilder) {
         BrokerService brokerService = new BrokerService();
-        brokerService.setBrokerName(brokerDefinition.getBrokerName());
-        brokerService.setUseJmx(brokerDefinition.isUseJmx());
-        brokerService.setPersistent(brokerDefinition.isPersistent());
+        brokerService.setBrokerName(brokerBuilder.getBrokerName());
+        brokerService.setUseJmx(brokerBuilder.isUseJmx());
+        brokerService.setPersistent(brokerBuilder.isPersistent());
 
-        addDestinationPolicy(brokerService, brokerDefinition.getDestinationPolicyDefinition());
-        addManagementContext(brokerService, brokerDefinition.getManagementContextDefinition());
-        addNetworkConnectors(brokerService, brokerDefinition.getNetworkConnectorsDefinition());
-        addPlugins(brokerService, brokerDefinition.getPluginsDefinition());
-        addTransportConnectors(brokerService, brokerDefinition.getTransportConnectorsDefinition());
+        addDestinationPolicy(brokerService, brokerBuilder.getDestinationPolicyBuilder());
+        addManagementContext(brokerService, brokerBuilder.getManagementContextBuilder());
+        addNetworkConnectors(brokerService, brokerBuilder.getNetworkConnectorsBuilder());
+        addPlugins(brokerService, brokerBuilder.getPluginsBuilder());
+        addTransportConnectors(brokerService, brokerBuilder.getTransportConnectorsBuilder());
         return brokerService;
     }
 
-    private void addDestinationPolicy(BrokerService brokerService, DestinationPolicyDefinition destinationPolicyDefinition) {
-        if (destinationPolicyDefinition == null)  return;
+    private void addDestinationPolicy(BrokerService brokerService, DestinationPolicyBuilder destinationPolicyBuilder) {
+        if (destinationPolicyBuilder == null)  return;
 
-        PolicyMapDefinition policyMapDefinition = destinationPolicyDefinition.getPolicyMapDefinition();
-        if (policyMapDefinition == null) return;
+        PolicyMapBuilder policyMapBuilder = destinationPolicyBuilder.getPolicyMapBuilder();
+        if (policyMapBuilder == null) return;
 
         PolicyMap policyMap = new PolicyMap();
         brokerService.setDestinationPolicy(policyMap);
 
-        policyMap.setDefaultEntry(buildPolicyEntry(policyMapDefinition.getDefaultPolicyEntryDefinition()));
+        policyMap.setDefaultEntry(buildPolicyEntry(policyMapBuilder.getDefaultPolicyEntryBuilder()));
 
-        PolicyEntriesDefinition policyEntriesDefinition = policyMapDefinition.getPolicyEntriesDefinition();
-        addPolicyEntries(policyMap, policyEntriesDefinition);
+        PolicyEntriesBuilder policyEntriesBuilder = policyMapBuilder.getPolicyEntriesBuilder();
+        addPolicyEntries(policyMap, policyEntriesBuilder);
     }
 
-    private PolicyEntry buildPolicyEntry(DefaultPolicyEntryDefinition definition) {
+    private PolicyEntry buildPolicyEntry(DefaultPolicyEntryBuilder definition) {
         if (definition == null) return null;
 
         PolicyEntry policyEntry = new PolicyEntryBuilder().build(definition);
@@ -77,13 +77,13 @@ public class BrokerServiceBuilder {
     }
 
 
-    private void addPolicyEntries(PolicyMap policyMap, PolicyEntriesDefinition policyEntriesDefinition) {
-        if (policyEntriesDefinition == null) return;
+    private void addPolicyEntries(PolicyMap policyMap, PolicyEntriesBuilder policyEntriesBuilder) {
+        if (policyEntriesBuilder == null) return;
 
-        List<PolicyEntryDefinition> policyEntryDefinitions = policyEntriesDefinition.getPolicyEntryDefinitions();
+        List<org.apache.activemq.broker.dsl.PolicyEntryBuilder> policyEntryBuilders = policyEntriesBuilder.getPolicyEntryDefinitions();
         List<PolicyEntry> policyEntries = new ArrayList<>();
-        for (PolicyEntryDefinition policyEntryDefinition: policyEntryDefinitions) {
-            PolicyEntry policyEntry = new PolicyEntryBuilder().build(policyEntryDefinition);
+        for (org.apache.activemq.broker.dsl.PolicyEntryBuilder policyEntryBuilder : policyEntryBuilders) {
+            PolicyEntry policyEntry = new PolicyEntryBuilder().build(policyEntryBuilder);
             policyEntries.add(policyEntry);
         }
 
@@ -91,55 +91,55 @@ public class BrokerServiceBuilder {
     }
 
 
-    private void addPlugins(BrokerService brokerService, PluginsDefinition pluginsDefinition) {
-        if (pluginsDefinition == null) return;
+    private void addPlugins(BrokerService brokerService, PluginsBuilder pluginsBuilder) {
+        if (pluginsBuilder == null) return;
 
         List<BrokerPlugin> brokerPluginList = new ArrayList<>();
 
-        addSimpleAuthenticationPlugin(brokerPluginList, pluginsDefinition.getSimpleAuthenticationPluginDefinition());
+        addSimpleAuthenticationPlugin(brokerPluginList, pluginsBuilder.getSimpleAuthenticationPluginBuilder());
 
         if (!brokerPluginList.isEmpty()) {
             brokerService.setPlugins(brokerPluginList.toArray(new BrokerPlugin[]{}));
         }
     }
 
-    private void addSimpleAuthenticationPlugin(List<BrokerPlugin> brokerPluginList, SimpleAuthenticationPluginDefinition simpleAuthenticationPluginDefinition) {
+    private void addSimpleAuthenticationPlugin(List<BrokerPlugin> brokerPluginList, SimpleAuthenticationPluginBuilder simpleAuthenticationPluginBuilder) {
         assert (brokerPluginList != null);
-        if (simpleAuthenticationPluginDefinition == null) return;
+        if (simpleAuthenticationPluginBuilder == null) return;
 
         SimpleAuthenticationPlugin simpleAuthenticationPlugin = new SimpleAuthenticationPlugin();
-        UsersDefinition usersDefinition = simpleAuthenticationPluginDefinition.getUsersDefinition();
-        if (usersDefinition == null) return;
+        UsersBuilder usersBuilder = simpleAuthenticationPluginBuilder.getUsersBuilder();
+        if (usersBuilder == null) return;
 
-        List<AuthenticationUserDefinition> authenticationUserDefinitions = usersDefinition.getAuthenticationUserDefinitions();
+        List<AuthenticationUserBuilder> authenticationUserBuilders = usersBuilder.getAuthenticationUserBuilders();
         List<AuthenticationUser> authenticationUsers = new ArrayList<>();
-        for (AuthenticationUserDefinition authenticationUserDefinition : authenticationUserDefinitions) {
+        for (AuthenticationUserBuilder authenticationUserBuilder : authenticationUserBuilders) {
             authenticationUsers.add(new AuthenticationUser(
-                    authenticationUserDefinition.getUsername(),
-                    authenticationUserDefinition.getPassword(),
-                    authenticationUserDefinition.getGroups()));
+                    authenticationUserBuilder.getUsername(),
+                    authenticationUserBuilder.getPassword(),
+                    authenticationUserBuilder.getGroups()));
         }
 
         simpleAuthenticationPlugin.setUsers(authenticationUsers);
         brokerPluginList.add(simpleAuthenticationPlugin);
     }
 
-    private void addManagementContext(BrokerService brokerService, ManagementContextDefinition managementContextDefinition) {
-        if (managementContextDefinition == null) return;
+    private void addManagementContext(BrokerService brokerService, ManagementContextBuilder managementContextBuilder) {
+        if (managementContextBuilder == null) return;
 
-        ManagementContext1Definition managementContext1Definition = managementContextDefinition.getManagementContext1Definition();
-        if (managementContext1Definition == null) return;
+        ManagementContext1Builder managementContext1Builder = managementContextBuilder.getManagementContext1Builder();
+        if (managementContext1Builder == null) return;
 
         ManagementContext managementContext = new ManagementContext();
-        managementContext.setCreateConnector(managementContext1Definition.isCreateConnector());
+        managementContext.setCreateConnector(managementContext1Builder.isCreateConnector());
         brokerService.setManagementContext(managementContext);
 
     }
 
-    private void addTransportConnectors(BrokerService brokerService, TransportConnectorsDefinition transportConnectorsDefinition) {
-        if (transportConnectorsDefinition == null) return;
+    private void addTransportConnectors(BrokerService brokerService, TransportConnectorsBuilder transportConnectorsBuilder) {
+        if (transportConnectorsBuilder == null) return;
 
-        for (TransportConnectorDefinition tcDefinition : transportConnectorsDefinition.getTransportConnectorDefinitions()) {
+        for (TransportConnectorBuilder tcDefinition : transportConnectorsBuilder.getTransportConnectorDefinitions()) {
             TransportConnector transportConnector = new TransportConnector();
             transportConnector.setName(tcDefinition.getName());
             transportConnector.setUri(URI.create(tcDefinition.getUri()));
@@ -151,10 +151,10 @@ public class BrokerServiceBuilder {
         }
     }
 
-    private void addNetworkConnectors(BrokerService brokerService, NetworkConnectorsDefinition networkConnectorsDefinition) {
-        if (networkConnectorsDefinition == null) return;
+    private void addNetworkConnectors(BrokerService brokerService, NetworkConnectorsBuilder networkConnectorsBuilder) {
+        if (networkConnectorsBuilder == null) return;
 
-        for (NetworkConnectorDefinition ncDefinition : networkConnectorsDefinition.getNetworkConnectorDefinitions()) {
+        for (NetworkConnectorBuilder ncDefinition : networkConnectorsBuilder.getNetworkConnectorDefinitions()) {
             NetworkConnector networkConnector;
             try {
                 networkConnector = new DiscoveryNetworkConnector(URI.create(ncDefinition.getUri()));

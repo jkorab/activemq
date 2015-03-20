@@ -17,9 +17,8 @@
 
 package org.apache.activemq.broker.dsl.translator;
 
-import org.apache.activemq.broker.dsl.DestinationPolicyEntryDefinition;
-import org.apache.activemq.broker.dsl.PolicyEntryDefinition;
-import org.apache.activemq.broker.dsl.QueuePolicyEntryDefinition;
+import org.apache.activemq.broker.dsl.DestinationPolicyEntryBuilder;
+import org.apache.activemq.broker.dsl.QueuePolicyEntryBuilder;
 import org.apache.activemq.broker.region.policy.PolicyEntry;
 import org.apache.commons.lang.Validate;
 
@@ -28,7 +27,7 @@ import org.apache.commons.lang.Validate;
  */
 class PolicyEntryBuilder {
 
-    PolicyEntry build(PolicyEntryDefinition definition) {
+    PolicyEntry build(org.apache.activemq.broker.dsl.PolicyEntryBuilder definition) {
         Validate.notNull(definition, "definition is null");
 
         PolicyEntry policyEntry = new PolicyEntry();
@@ -42,18 +41,18 @@ class PolicyEntryBuilder {
 
         policyEntry.setPendingMessageLimitStrategy(definition.getPendingMessageLimitStrategy());
 
-        if (definition instanceof DestinationPolicyEntryDefinition) {
-                applyDestinationFields(policyEntry, (DestinationPolicyEntryDefinition) definition);
+        if (definition instanceof DestinationPolicyEntryBuilder) {
+                applyDestinationFields(policyEntry, (DestinationPolicyEntryBuilder) definition);
         }
         return policyEntry;
     }
 
-    private void applyDestinationFields(PolicyEntry policyEntry, DestinationPolicyEntryDefinition definition) {
+    private void applyDestinationFields(PolicyEntry policyEntry, DestinationPolicyEntryBuilder definition) {
         assert (policyEntry != null);
         assert (definition != null);
 
-        if (definition instanceof QueuePolicyEntryDefinition) {
-            applyQueueFields(policyEntry, (QueuePolicyEntryDefinition) definition);
+        if (definition instanceof QueuePolicyEntryBuilder) {
+            applyQueueFields(policyEntry, (QueuePolicyEntryBuilder) definition);
         } else {
             if (definition.getTemporary()) {
                 policyEntry.setTempTopic(true);
@@ -61,7 +60,7 @@ class PolicyEntryBuilder {
         }
     }
 
-    private void applyQueueFields(PolicyEntry policyEntry, QueuePolicyEntryDefinition definition) {
+    private void applyQueueFields(PolicyEntry policyEntry, QueuePolicyEntryBuilder definition) {
         assert (policyEntry != null);
         assert (definition != null);
 

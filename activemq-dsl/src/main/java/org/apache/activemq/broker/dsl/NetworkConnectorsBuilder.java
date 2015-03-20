@@ -25,33 +25,33 @@ import java.util.TreeMap;
 /**
  * @author jkorab
  */
-public class NetworkConnectorsDefinition {
+public class NetworkConnectorsBuilder {
 
-    private final BrokerDefinition brokerDefinition;
-    private Map<String, NetworkConnectorDefinition> networkConnectorDefinitionMap = new TreeMap<>();
+    private final BrokerBuilder brokerBuilder;
+    private Map<String, NetworkConnectorBuilder> networkConnectorDefinitionMap = new TreeMap<>();
 
-    NetworkConnectorsDefinition(BrokerDefinition brokerDefinition) {
-        assert (brokerDefinition != null);
-        this.brokerDefinition = brokerDefinition;
+    NetworkConnectorsBuilder(BrokerBuilder brokerBuilder) {
+        assert (brokerBuilder != null);
+        this.brokerBuilder = brokerBuilder;
     }
 
-    public NetworkConnectorDefinition networkConnector(String name, String uri) {
+    public NetworkConnectorBuilder networkConnector(String name, String uri) {
         Validate.notEmpty(name, "name is empty");
         Validate.notEmpty(uri, "uri is empty");
 
         if (networkConnectorDefinitionMap.containsKey(name)) {
             throw new IllegalArgumentException("Network connector named " + name + "already defined");
         }
-        NetworkConnectorDefinition transportConnectorDefinition = new NetworkConnectorDefinition(this, name, uri);
+        NetworkConnectorBuilder transportConnectorDefinition = new NetworkConnectorBuilder(this, name, uri);
         networkConnectorDefinitionMap.put(name, transportConnectorDefinition);
         return transportConnectorDefinition;
     }
 
-    public BrokerDefinition end() {
-        return brokerDefinition;
+    public BrokerBuilder end() {
+        return brokerBuilder;
     }
 
-    public Collection<NetworkConnectorDefinition> getNetworkConnectorDefinitions() {
+    public Collection<NetworkConnectorBuilder> getNetworkConnectorDefinitions() {
         return networkConnectorDefinitionMap.values();
     }
 }

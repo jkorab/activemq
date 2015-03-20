@@ -23,8 +23,8 @@ import org.apache.commons.lang.Validate;
  */
 public class ActiveMQBrokers {
 
-    public static BrokerDefinition broker(String brokerName) {
+    public static BrokerBuilder broker(String brokerName) {
         Validate.notEmpty(brokerName, "brokerName is empty");
-        return new BrokerDefinition(brokerName);
+        return new BrokerBuilder(brokerName);
     }
 }

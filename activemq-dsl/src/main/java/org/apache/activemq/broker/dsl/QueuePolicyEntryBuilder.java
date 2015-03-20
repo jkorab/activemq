@@ -1,4 +1,4 @@
-/*
+/**
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -14,20 +14,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.apache.activemq.broker.dsl;
 
 /**
  * @author jkorab
  */
-public class TopicPolicyEntryDefinition extends DestinationPolicyEntryDefinition<TopicPolicyEntryDefinition> {
+public class QueuePolicyEntryBuilder extends DestinationPolicyEntryBuilder<QueuePolicyEntryBuilder> {
 
-    TopicPolicyEntryDefinition(PolicyEntriesDefinition policyEntriesDefinition, String name) {
-        super(policyEntriesDefinition, name);
+    private int expireMessagesPeriod;
+
+    QueuePolicyEntryBuilder(PolicyEntriesBuilder policyEntriesBuilder, String name) {
+        super(policyEntriesBuilder, name);
     }
 
-    public TopicPolicyEntryDefinition(PolicyEntriesDefinition policyEntriesDefinition) {
-        super(policyEntriesDefinition);
+    public QueuePolicyEntryBuilder(PolicyEntriesBuilder policyEntriesBuilder) {
+        super(policyEntriesBuilder);
     }
 
+    public QueuePolicyEntryBuilder expireMessagesPeriod(int period) {
+        this.expireMessagesPeriod = period;
+        return this;
+    }
+
+    public int getExpireMessagesPeriod() {
+        return expireMessagesPeriod;
+    }
 }

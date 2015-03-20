@@ -19,27 +19,31 @@ package org.apache.activemq.broker.dsl;
 /**
  * @author jkorab
  */
-public class DestinationPolicyDefinition {
+public class TransportConnectorBuilder {
 
-    private final BrokerDefinition brokerDefinition;
-    private PolicyMapDefinition policyMapDefinition;
+    private final TransportConnectorsBuilder transportConnectorsBuilder;
+    private final String name;
+    private final String uri;
 
-    DestinationPolicyDefinition(BrokerDefinition brokerDefinition) {
-        assert (brokerDefinition != null);
-        this.brokerDefinition = brokerDefinition;
+    public TransportConnectorBuilder(TransportConnectorsBuilder transportConnectorsBuilder, String name, String uri) {
+        assert (transportConnectorsBuilder != null);
+        assert (name != null);
+        assert (uri != null);
+
+        this.uri = uri;
+        this.name = name;
+        this.transportConnectorsBuilder = transportConnectorsBuilder;
     }
 
-    public PolicyMapDefinition policyMap() {
-        policyMapDefinition = new PolicyMapDefinition(this);
-        return policyMapDefinition;
+    public TransportConnectorsBuilder end() {
+        return transportConnectorsBuilder;
     }
 
-    public BrokerDefinition end() {
-        return brokerDefinition;
+    public String getName() {
+        return name;
     }
 
-    public PolicyMapDefinition getPolicyMapDefinition() {
-        return policyMapDefinition;
+    public String getUri() {
+        return uri;
     }
-
 }

@@ -19,24 +19,27 @@ package org.apache.activemq.broker.dsl;
 /**
  * @author jkorab
  */
-public class QueuePolicyEntryDefinition extends DestinationPolicyEntryDefinition<QueuePolicyEntryDefinition> {
+public class DestinationPolicyBuilder {
 
-    private int expireMessagesPeriod;
+    private final BrokerBuilder brokerBuilder;
+    private PolicyMapBuilder policyMapBuilder;
 
-    QueuePolicyEntryDefinition(PolicyEntriesDefinition policyEntriesDefinition, String name) {
-        super(policyEntriesDefinition, name);
+    DestinationPolicyBuilder(BrokerBuilder brokerBuilder) {
+        assert (brokerBuilder != null);
+        this.brokerBuilder = brokerBuilder;
     }
 
-    public QueuePolicyEntryDefinition(PolicyEntriesDefinition policyEntriesDefinition) {
-        super(policyEntriesDefinition);
+    public PolicyMapBuilder policyMap() {
+        policyMapBuilder = new PolicyMapBuilder(this);
+        return policyMapBuilder;
     }
 
-    public QueuePolicyEntryDefinition expireMessagesPeriod(int period) {
-        this.expireMessagesPeriod = period;
-        return this;
+    public BrokerBuilder end() {
+        return brokerBuilder;
     }
 
-    public int getExpireMessagesPeriod() {
-        return expireMessagesPeriod;
+    public PolicyMapBuilder getPolicyMapBuilder() {
+        return policyMapBuilder;
     }
+
 }

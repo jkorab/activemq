@@ -21,36 +21,36 @@ import org.apache.commons.lang.Validate;
 /**
  * @author jkorab
  */
-public class AuthenticationUserDefinition {
+public class AuthenticationUserBuilder {
 
-    private final UsersDefinition usersDefinition;
+    private final UsersBuilder usersBuilder;
     private final String username;
     private String password;
     private String groups;
 
-    AuthenticationUserDefinition(UsersDefinition usersDefinition, String username) {
-        assert (usersDefinition != null);
+    AuthenticationUserBuilder(UsersBuilder usersBuilder, String username) {
+        assert (usersBuilder != null);
         assert (username != null);
-        this.usersDefinition = usersDefinition;
+        this.usersBuilder = usersBuilder;
         this.username = username;
     }
 
-    public AuthenticationUserDefinition password(String password) {
+    public AuthenticationUserBuilder password(String password) {
         Validate.notEmpty(password, "password is empty");
         this.password = password;
         return this;
     }
 
-    public AuthenticationUserDefinition groups(String groups) {
+    public AuthenticationUserBuilder groups(String groups) {
         Validate.notEmpty(groups, "groups is empty");
         this.groups = groups;
         return this;
     }
 
-    public UsersDefinition end() {
+    public UsersBuilder end() {
         Validate.notNull(password, "password is null");
         Validate.notNull(groups, "groups is null");
-        return usersDefinition;
+        return usersBuilder;
     }
 
     public String getGroups() {

@@ -19,26 +19,26 @@ package org.apache.activemq.broker.dsl;
 /**
  * @author jkorab
  */
-public class ManagementContextDefinition {
+public class ManagementContextBuilder {
 
-    private BrokerDefinition brokerDefinition;
-    private ManagementContext1Definition managementContext1Definition;
+    private BrokerBuilder brokerBuilder;
+    private ManagementContext1Builder managementContext1Builder;
 
-    ManagementContextDefinition(BrokerDefinition brokerDefinition) {
-        assert (brokerDefinition != null);
-        this.brokerDefinition = brokerDefinition;
+    ManagementContextBuilder(BrokerBuilder brokerBuilder) {
+        assert (brokerBuilder != null);
+        this.brokerBuilder = brokerBuilder;
     }
 
-    public ManagementContext1Definition managementContext() {
-        managementContext1Definition = new ManagementContext1Definition(this);
-        return managementContext1Definition;
+    public ManagementContext1Builder managementContext() {
+        managementContext1Builder = new ManagementContext1Builder(this);
+        return managementContext1Builder;
     }
 
-    public BrokerDefinition end() {
-        return brokerDefinition;
+    public BrokerBuilder end() {
+        return brokerBuilder;
     }
 
-    public ManagementContext1Definition getManagementContext1Definition() {
-        return managementContext1Definition;
+    public ManagementContext1Builder getManagementContext1Builder() {
+        return managementContext1Builder;
     }
 }

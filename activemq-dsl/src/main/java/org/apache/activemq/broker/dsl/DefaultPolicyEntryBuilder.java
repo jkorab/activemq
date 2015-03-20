@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -14,31 +14,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.activemq.broker.dsl;
 
 /**
  * @author jkorab
  */
-public class ManagementContext1Definition {
+public class DefaultPolicyEntryBuilder extends PolicyEntryBuilder<DefaultPolicyEntryBuilder> {
 
-    private final ManagementContextDefinition managementContextDefinition;
-    private boolean createConnector = true;
+    private final PolicyMapBuilder policyMapBuilder;
 
-    ManagementContext1Definition(ManagementContextDefinition managementContextDefinition) {
-        assert (managementContextDefinition != null);
-        this.managementContextDefinition = managementContextDefinition;
+    public DefaultPolicyEntryBuilder(PolicyMapBuilder policyMapBuilder) {
+        assert (policyMapBuilder != null);
+        this.policyMapBuilder = policyMapBuilder;
     }
 
-    public ManagementContext1Definition createConnector(boolean createConnector) {
-        this.createConnector = createConnector;
-        return this;
+    public PolicyMapBuilder end() {
+        return policyMapBuilder;
     }
 
-    public ManagementContextDefinition end() {
-        return managementContextDefinition;
-    }
-
-    public boolean isCreateConnector() {
-        return createConnector;
-    }
 }

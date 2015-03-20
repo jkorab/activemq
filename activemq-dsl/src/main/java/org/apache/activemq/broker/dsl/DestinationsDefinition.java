@@ -26,20 +26,20 @@ import java.util.List;
  */
 public class DestinationsDefinition {
 
-    private final NetworkConnectorDefinition networkConnectorDefinition;
+    private final NetworkConnectorBuilder networkConnectorBuilder;
     private final List<String> topics = new ArrayList<>();
     private final List<String> queues = new ArrayList<>();
 
-    DestinationsDefinition(NetworkConnectorDefinition networkConnectorDefinition) {
-        assert (networkConnectorDefinition != null);
-        this.networkConnectorDefinition = networkConnectorDefinition;
+    DestinationsDefinition(NetworkConnectorBuilder networkConnectorBuilder) {
+        assert (networkConnectorBuilder != null);
+        this.networkConnectorBuilder = networkConnectorBuilder;
     }
 
     public DestinationsDefinition topic(String topicName) {
         Validate.notEmpty(topicName, "topicName is empty");
 
         if (topics.contains(topicName)) {
-            throw new IllegalArgumentException("Topic " + topicName + "already added to networkConnector " + networkConnectorDefinition.getName());
+            throw new IllegalArgumentException("Topic " + topicName + "already added to networkConnector " + networkConnectorBuilder.getName());
         }
         topics.add(topicName);
         return this;
@@ -49,14 +49,14 @@ public class DestinationsDefinition {
         Validate.notEmpty(queueName, "queueName is empty");
 
         if (queues.contains(queueName)) {
-            throw new IllegalArgumentException("Queue " + queueName + "already added to networkConnector " + networkConnectorDefinition.getName());
+            throw new IllegalArgumentException("Queue " + queueName + "already added to networkConnector " + networkConnectorBuilder.getName());
         }
         queues.add(queueName);
         return this;
     }
 
-    public NetworkConnectorDefinition end() {
-        return networkConnectorDefinition;
+    public NetworkConnectorBuilder end() {
+        return networkConnectorBuilder;
     }
 
 }

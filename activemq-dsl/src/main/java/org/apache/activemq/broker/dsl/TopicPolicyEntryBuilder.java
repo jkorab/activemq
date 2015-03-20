@@ -1,4 +1,4 @@
-/**
+/*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
@@ -14,32 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.apache.activemq.broker.dsl;
 
 /**
  * @author jkorab
  */
-public class SimpleAuthenticationPluginDefinition {
+public class TopicPolicyEntryBuilder extends DestinationPolicyEntryBuilder<TopicPolicyEntryBuilder> {
 
-    private final PluginsDefinition pluginsDefinition;
-    private UsersDefinition usersDefinition;
-
-    SimpleAuthenticationPluginDefinition(PluginsDefinition pluginsDefinition) {
-        assert (pluginsDefinition != null);
-        this.pluginsDefinition = pluginsDefinition;
+    TopicPolicyEntryBuilder(PolicyEntriesBuilder policyEntriesBuilder, String name) {
+        super(policyEntriesBuilder, name);
     }
 
-
-    public UsersDefinition users() {
-        usersDefinition = new UsersDefinition(this);
-        return usersDefinition;
+    public TopicPolicyEntryBuilder(PolicyEntriesBuilder policyEntriesBuilder) {
+        super(policyEntriesBuilder);
     }
 
-    public PluginsDefinition end() {
-        return pluginsDefinition;
-    }
-
-    public UsersDefinition getUsersDefinition() {
-        return usersDefinition;
-    }
 }

@@ -19,9 +19,9 @@ package org.apache.activemq.test.dsl;
 
 
 import org.apache.activemq.broker.dsl.BrokerContext;
-import org.apache.activemq.broker.dsl.BrokerDefinition;
-import org.apache.activemq.broker.dsl.TransportConnectorDefinition;
-import org.apache.activemq.broker.dsl.TransportConnectorsDefinition;
+import org.apache.activemq.broker.dsl.BrokerBuilder;
+import org.apache.activemq.broker.dsl.TransportConnectorBuilder;
+import org.apache.activemq.broker.dsl.TransportConnectorsBuilder;
 import org.apache.commons.lang.Validate;
 import org.junit.rules.ExternalResource;
 
@@ -35,15 +35,15 @@ import java.util.Map;
  * @author jkorab
  */
 public class BrokerResource extends ExternalResource {
-    protected final BrokerDefinition brokerDefinition;
+    protected final BrokerBuilder brokerBuilder;
 
     private final BrokerContext brokerContext;
     private final Map<String, ConnectionHolder> connectionHolderMap = new HashMap<>();
 
-    public BrokerResource(BrokerDefinition brokerDefinition) {
-        Validate.notNull(brokerDefinition, "brokerDefinition is null");
-        this.brokerDefinition = brokerDefinition;
-        this.brokerContext = new BrokerContext(brokerDefinition);
+    public BrokerResource(BrokerBuilder brokerBuilder) {
+        Validate.notNull(brokerBuilder, "brokerDefinition is null");
+        this.brokerBuilder = brokerBuilder;
+        this.brokerContext = new BrokerContext(brokerBuilder);
     }
 
     @Override
@@ -66,8 +66,8 @@ public class BrokerResource extends ExternalResource {
         return proxyDefinition;
     }
 
-    BrokerDefinition getBrokerDefinition() {
-        return brokerDefinition;
+    BrokerBuilder getBrokerBuilder() {
+        return brokerBuilder;
     }
 
     /**
@@ -81,14 +81,14 @@ public class BrokerResource extends ExternalResource {
     public String getTcpConnectionUri(String transportConnectorName) {
         Validate.notEmpty(transportConnectorName, "transportConnectorName is empty");
 
-        TransportConnectorsDefinition transportConnectorsDefinition = brokerDefinition.getTransportConnectorsDefinition();
-        if (transportConnectorsDefinition == null) {
+        TransportConnectorsBuilder transportConnectorsBuilder = brokerBuilder.getTransportConnectorsBuilder();
+        if (transportConnectorsBuilder == null) {
             throw new IllegalStateException("No transportConnectors defined");
         }
 
-        Collection<TransportConnectorDefinition> tcDefinitions = transportConnectorsDefinition.getTransportConnectorDefinitions();
+        Collection<TransportConnectorBuilder> tcDefinitions = transportConnectorsBuilder.getTransportConnectorDefinitions();
         String retval = null;
-        for (TransportConnectorDefinition tcDefinition: tcDefinitions) {
+        for (TransportConnectorBuilder tcDefinition: tcDefinitions) {
             if (tcDefinition.getName().equals(transportConnectorName)) {
                 URI tcUri = URI.create(tcDefinition.getUri());
                 assertSchemeIn(tcUri.getScheme(), "tcp", "nio");

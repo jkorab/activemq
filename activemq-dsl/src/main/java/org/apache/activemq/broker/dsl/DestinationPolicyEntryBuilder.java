@@ -20,29 +20,29 @@ package org.apache.activemq.broker.dsl;
 /**
  * @author jkorab
  */
-public abstract class DestinationPolicyEntryDefinition<T extends PolicyEntryDefinition> extends PolicyEntryDefinition<T> {
+public abstract class DestinationPolicyEntryBuilder<T extends PolicyEntryBuilder> extends PolicyEntryBuilder<T> {
 
     private final boolean temporary;
     private final String name;
-    private final PolicyEntriesDefinition policyEntriesDefinition;
+    private final PolicyEntriesBuilder policyEntriesBuilder;
 
-    DestinationPolicyEntryDefinition(PolicyEntriesDefinition policyEntriesDefinition) {
-        assert (policyEntriesDefinition != null);
+    DestinationPolicyEntryBuilder(PolicyEntriesBuilder policyEntriesBuilder) {
+        assert (policyEntriesBuilder != null);
         this.temporary = true;
         this.name = null;
-        this.policyEntriesDefinition = policyEntriesDefinition;
+        this.policyEntriesBuilder = policyEntriesBuilder;
     }
 
-    DestinationPolicyEntryDefinition(PolicyEntriesDefinition policyEntriesDefinition, String name) {
+    DestinationPolicyEntryBuilder(PolicyEntriesBuilder policyEntriesBuilder, String name) {
         assert (name != null);
-        assert (policyEntriesDefinition != null);
+        assert (policyEntriesBuilder != null);
         this.temporary = false;
         this.name = name;
-        this.policyEntriesDefinition = policyEntriesDefinition;
+        this.policyEntriesBuilder = policyEntriesBuilder;
     }
 
-    public PolicyEntriesDefinition end() {
-        return policyEntriesDefinition;
+    public PolicyEntriesBuilder end() {
+        return policyEntriesBuilder;
     }
 
     public String getName() {

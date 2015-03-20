@@ -22,7 +22,7 @@ import org.apache.activemq.broker.region.policy.PendingMessageLimitStrategy;
  * Base class for common attributes of queue and topic policyEntry elements.
  * @author jkorab
  */
-public abstract class PolicyEntryDefinition <T extends PolicyEntryDefinition> {
+public abstract class PolicyEntryBuilder<T extends PolicyEntryBuilder> {
 
     private Boolean advisoryForFastProducers;
     private Boolean advisoryForConsumed;
