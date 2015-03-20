@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Def class used to construct a BrokerService from a {@link org.apache.activemq.broker.dsl.BrokerDef}.
+ * Translator class used to construct a BrokerService from a {@link org.apache.activemq.broker.dsl.model.BrokerDef}.
  *
  * @author jkorab
  */
