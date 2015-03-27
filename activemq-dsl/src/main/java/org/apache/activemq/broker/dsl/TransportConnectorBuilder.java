@@ -43,6 +43,61 @@ public class TransportConnectorBuilder {
         return transportConnectorsBuilder.transportConnector(name, uri);
     }
 
+    public TransportConnectorBuilder allowLinkStealing(Boolean allowLinkStealing) {
+        transportConnectorDef.setAllowLinkStealing(allowLinkStealing);
+        return this;
+    }
+
+    public TransportConnectorBuilder auditNetworkProducers(Boolean auditNetworkProducers) {
+        transportConnectorDef.setAuditNetworkProducers(auditNetworkProducers);
+        return this;
+    }
+
+    public TransportConnectorBuilder disableAsyncDispatch(Boolean disableAsyncDispatch) {
+        transportConnectorDef.setDisableAsyncDispatch(disableAsyncDispatch);
+        return this;
+    }
+
+    public TransportConnectorBuilder discoveryUri(String discoveryUri) {
+        transportConnectorDef.setDiscoveryUri(discoveryUri);
+        return this;
+    }
+
+    public TransportConnectorBuilder enableStatusMonitor(Boolean enableStatusMonitor) {
+        transportConnectorDef.setEnableStatusMonitor(enableStatusMonitor);
+        return this;
+    }
+
+    public TransportConnectorBuilder maximumConsumersAllowedPerConnection(Integer maximumConsumersAllowedPerConnection) {
+        transportConnectorDef.setMaximumConsumersAllowedPerConnection(maximumConsumersAllowedPerConnection);
+        return this;
+    }
+
+    public TransportConnectorBuilder maximumProducersAllowedPerConnection(Integer maximumProducersAllowedPerConnection) {
+        transportConnectorDef.setMaximumProducersAllowedPerConnection(maximumProducersAllowedPerConnection);
+        return this;
+    }
+
+    public TransportConnectorBuilder rebalanceClusterClients(Boolean rebalanceClusterClients) {
+        transportConnectorDef.setRebalanceClusterClients(rebalanceClusterClients);
+        return this;
+    }
+
+    public TransportConnectorBuilder updateClusterClients(Boolean updateClusterClients) {
+        transportConnectorDef.setUpdateClusterClients(updateClusterClients);
+        return this;
+    }
+
+    public TransportConnectorBuilder updateClusterClientsOnRemove(Boolean updateClusterClientsOnRemove) {
+        transportConnectorDef.setUpdateClusterClientsOnRemove(updateClusterClientsOnRemove);
+        return this;
+    }
+
+    public TransportConnectorBuilder updateClusterFilter(String updateClusterFilter) {
+        transportConnectorDef.setUpdateClusterFilter(updateClusterFilter);
+        return this;
+    }
+
     /**
      * Closes off the transportConnectors block.
      */

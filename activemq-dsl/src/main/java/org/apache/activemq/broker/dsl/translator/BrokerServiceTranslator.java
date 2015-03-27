@@ -301,9 +301,7 @@ public class BrokerServiceTranslator {
     private void addTransportConnectors(BrokerService brokerService,
                                         List<TransportConnectorDef> transportConnectorDefs) {
         for (TransportConnectorDef transportConnectorDef : transportConnectorDefs) {
-            TransportConnector transportConnector = new TransportConnector();
-            transportConnector.setName(transportConnectorDef.getName());
-            transportConnector.setUri(URI.create(transportConnectorDef.getUri()));
+            TransportConnector transportConnector = new TransportConnectorTranslator().translate(transportConnectorDef);
             try {
                 brokerService.addConnector(transportConnector);
             } catch (Exception e) {
@@ -311,6 +309,7 @@ public class BrokerServiceTranslator {
             }
         }
     }
+
 
     private void addNetworkConnectors(BrokerService brokerService, List<NetworkConnectorDef> networkConnectorDefs) {
         if (networkConnectorDefs == null) return;
