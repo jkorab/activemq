@@ -15,37 +15,35 @@
  * limitations under the License.
  */
 
-package org.apache.activemq.broker.dsl.model;
+package org.apache.activemq.broker.dsl;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import static org.junit.Assert.*;
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.xml.bind.JAXBException;
 
 /**
  * @author jkorab
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-public class TransportConnectorDef {
+public class JaxbRenderingTest {
+    private Logger log = LoggerFactory.getLogger(this.getClass());
+    
+    @Test
+    public void testXmlRendering() throws JAXBException {
+        BrokerContext context = new BrokerContext(ActiveMQBrokers.broker("embedded").useJmx(false).persistent(false)
+                .transportConnectors()
+                    .transportConnector("openwire", "tcp://0.0.0.0:61616").end()
+                .end());
 
-    @XmlAttribute
-    private String name;
-
-    @XmlAttribute
-    private String uri;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUri() {
-        return uri;
-    }
-
-    public void setUri(String uri) {
-        this.uri = uri;
+        context.start();
+        try {
+            String xml = context.getConfigAsXml();
+            log.info(xml);
+            assertNotNull(xml);
+        } finally {
+            context.stop();
+        }
     }
 }

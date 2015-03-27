@@ -58,4 +58,8 @@ public class NetworkConnectorBuilder {
     public NetworkConnectorDef build() {
         return networkConnectorDef;
     }
+
+    public String getName() {
+        return networkConnectorDef.getName();
+    }
 }

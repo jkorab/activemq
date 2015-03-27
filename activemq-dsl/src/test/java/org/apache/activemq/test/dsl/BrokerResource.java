@@ -22,6 +22,8 @@ import org.apache.activemq.broker.dsl.BrokerContext;
 import org.apache.activemq.broker.dsl.BrokerBuilder;
 import org.apache.activemq.broker.dsl.TransportConnectorBuilder;
 import org.apache.activemq.broker.dsl.TransportConnectorsBuilder;
+import org.apache.activemq.broker.dsl.model.BrokerDef;
+import org.apache.activemq.broker.dsl.model.TransportConnectorDef;
 import org.apache.commons.lang.Validate;
 import org.junit.rules.ExternalResource;
 
@@ -37,7 +39,7 @@ import java.util.Map;
 public class BrokerResource extends ExternalResource {
     protected final BrokerBuilder brokerBuilder;
 
-    private final BrokerContext brokerContext;
+    protected final BrokerContext brokerContext;
     private final Map<String, ConnectionHolder> connectionHolderMap = new HashMap<>();
 
     public BrokerResource(BrokerBuilder brokerBuilder) {
@@ -81,16 +83,13 @@ public class BrokerResource extends ExternalResource {
     public String getTcpConnectionUri(String transportConnectorName) {
         Validate.notEmpty(transportConnectorName, "transportConnectorName is empty");
 
-        TransportConnectorsBuilder transportConnectorsBuilder = brokerBuilder.getTransportConnectorsBuilder();
-        if (transportConnectorsBuilder == null) {
-            throw new IllegalStateException("No transportConnectors defined");
-        }
+        BrokerDef brokerDef = brokerContext.getBrokerDef();
+        assert (brokerDef != null);
 
-        Collection<TransportConnectorBuilder> tcDefinitions = transportConnectorsBuilder.getTransportConnectorDefinitions();
         String retval = null;
-        for (TransportConnectorBuilder tcDefinition: tcDefinitions) {
-            if (tcDefinition.getName().equals(transportConnectorName)) {
-                URI tcUri = URI.create(tcDefinition.getUri());
+        for (TransportConnectorDef tcDef: brokerDef.getTransportConnectorDefs()) {
+            if (tcDef.getName().equals(transportConnectorName)) {
+                URI tcUri = URI.create(tcDef.getUri());
                 assertSchemeIn(tcUri.getScheme(), "tcp", "nio");
                 retval = "tcp://localhost:" + tcUri.getPort();
                 break;

@@ -17,21 +17,39 @@
 
 package org.apache.activemq.broker.dsl.model;
 
+import javax.xml.bind.annotation.*;
 import java.util.List;
 
 /**
  * @author jkorab
  */
+@XmlRootElement(name="broker")
+@XmlType
+@XmlAccessorType(XmlAccessType.FIELD)
 public class BrokerDef {
 
+    @XmlAttribute
     private String brokerName;
+    @XmlAttribute
     private Boolean useJmx = false;
+    @XmlAttribute
     private Boolean persistent = true;
 
+    @XmlElement(name="destinationPolicy")
     private DestinationPolicyDef destinationPolicyDef;
+
+    @XmlElement(name="managementContext")
     private ManagementContextDef managementContextDef;
+
+    @XmlElementWrapper(name="networkConnectors")
+    @XmlElement(name="networkConnector")
     private List<NetworkConnectorDef> networkConnectorDefs;
+
+    @XmlElement(name="plugins")
     private PluginsDef pluginsDef;
+
+    @XmlElementWrapper(name="transportConnectors")
+    @XmlElement(name="transportConnector")
     private List<TransportConnectorDef> transportConnectorDefs;
 
     public String getBrokerName() {

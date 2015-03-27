@@ -18,8 +18,11 @@
 package org.apache.activemq.test.dsl;
 
 
+import org.apache.activemq.broker.dsl.BrokerContext;
 import org.apache.activemq.broker.dsl.TransportConnectorBuilder;
 import org.apache.activemq.broker.dsl.TransportConnectorsBuilder;
+import org.apache.activemq.broker.dsl.model.BrokerDef;
+import org.apache.activemq.broker.dsl.model.TransportConnectorDef;
 import org.apache.commons.lang.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,20 +64,19 @@ public class ProxiedBrokerResource extends BrokerResource {
 
     SocketProxy getSocketProxy(String transportConnectorName) {
         if (transportConnectorName.equals(proxyDefinition.getTransportConnectorName())) {
-            TransportConnectorsBuilder transportConnectorsBuilder = brokerBuilder.getTransportConnectorsBuilder();
-            Validate.notNull(transportConnectorsBuilder, "No transportConnectors defined, so cannot proxy");
-            Collection<TransportConnectorBuilder> transportConnectorBuilders =
-                    transportConnectorsBuilder.getTransportConnectorDefinitions();
 
-            TransportConnectorBuilder transportConnectorBuilder = null;
-            for (TransportConnectorBuilder tcDefinition : transportConnectorBuilders) {
-                if (tcDefinition.getName().equals(transportConnectorName)) {
-                    transportConnectorBuilder = tcDefinition;
+            BrokerDef brokerDef = brokerContext.getBrokerDef();
+            assert (brokerDef != null);
+
+            TransportConnectorDef transportConnectorDef = null;
+            for (TransportConnectorDef tcDef : brokerDef.getTransportConnectorDefs()) {
+                if (tcDef.getName().equals(transportConnectorName)) {
+                    transportConnectorDef = tcDef;
                 }
             }
-            Validate.notNull(transportConnectorBuilder, "No transportConnector defined with name " + transportConnectorName);
+            Validate.notNull(transportConnectorDef, "No transportConnector defined with name " + transportConnectorName);
 
-            URI tcUri = URI.create(transportConnectorBuilder.getUri());
+            URI tcUri = URI.create(transportConnectorDef.getUri());
             URI brokerUri = URI.create("tcp://localhost:" + tcUri.getPort());
 
             try {

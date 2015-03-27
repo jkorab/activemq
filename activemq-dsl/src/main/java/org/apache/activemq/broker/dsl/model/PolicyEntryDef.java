@@ -19,9 +19,16 @@ package org.apache.activemq.broker.dsl.model;
 
 import org.apache.activemq.broker.region.policy.PendingMessageLimitStrategy;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * @author jkorab
  */
+@XmlType
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class PolicyEntryDef {
 
     private Boolean advisoryForFastProducers;
@@ -31,6 +38,8 @@ public abstract class PolicyEntryDef {
     private Boolean advisoryForSlowConsumers;
     private Boolean advisoryWhenFull;
     private Boolean producerFlowControl;
+
+    @XmlTransient
     private PendingMessageLimitStrategy pendingMessageLimitStrategy;
 
     public Boolean getAdvisoryForFastProducers() {

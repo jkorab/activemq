@@ -15,37 +15,12 @@
  * limitations under the License.
  */
 
-package org.apache.activemq.broker.dsl.model;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-
 /**
  * @author jkorab
  */
-@XmlAccessorType(XmlAccessType.FIELD)
-public class TransportConnectorDef {
+@XmlSchema(namespace="http://activemq.apache.org/schema/core",
+        elementFormDefault=XmlNsForm.QUALIFIED)
+package org.apache.activemq.broker.dsl.model;
 
-    @XmlAttribute
-    private String name;
-
-    @XmlAttribute
-    private String uri;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getUri() {
-        return uri;
-    }
-
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-}
+import javax.xml.bind.annotation.XmlNsForm;
+import javax.xml.bind.annotation.XmlSchema;

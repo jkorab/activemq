@@ -22,6 +22,10 @@ import org.apache.activemq.broker.dsl.model.TransportConnectorDef;
 import org.apache.activemq.broker.dsl.translator.BrokerServiceTranslator;
 import org.apache.commons.lang.Validate;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import java.io.StringWriter;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -109,5 +113,27 @@ public class BrokerContext {
             }
         }
         return connectorName;
+    }
+
+    public BrokerDef getBrokerDef() {
+        return brokerDef;
+    }
+
+    public String getConfigAsXml() {
+        if (brokerDef == null) {
+            throw new IllegalStateException("context has not been started");
+        }
+        StringWriter stringWriter = new StringWriter();
+        try {
+            JAXBContext jc = JAXBContext.newInstance(BrokerDef.class);
+            Marshaller marshaller = jc.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            marshaller.marshal(brokerDef, stringWriter);
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+        String xml = stringWriter.toString();
+        return xml;
     }
 }

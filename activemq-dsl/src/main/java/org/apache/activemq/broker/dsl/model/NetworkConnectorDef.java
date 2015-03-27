@@ -17,13 +17,25 @@
 
 package org.apache.activemq.broker.dsl.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlType;
+
 /**
  * @author jkorab
  */
+@XmlType(name="networkConnector")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class NetworkConnectorDef {
 
+    @XmlAttribute
     private String name;
+
+    @XmlAttribute
     private String uri;
+
+    @XmlAttribute
     private Integer networkTTL;
 
     public String getName() {
