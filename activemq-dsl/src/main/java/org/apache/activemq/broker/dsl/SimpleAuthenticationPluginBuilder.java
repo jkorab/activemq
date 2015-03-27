@@ -41,10 +41,6 @@ public class SimpleAuthenticationPluginBuilder {
         return pluginsBuilder;
     }
 
-    public UsersBuilder getUsersBuilder() {
-        return usersBuilder;
-    }
-
     public SimpleAuthenticationPluginDef build() {
         SimpleAuthenticationPluginDef simpleAuthenticationPluginDef = new SimpleAuthenticationPluginDef();
         if (usersBuilder != null) {

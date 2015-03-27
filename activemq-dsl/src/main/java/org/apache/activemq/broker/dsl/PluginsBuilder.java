@@ -41,10 +41,6 @@ public class PluginsBuilder {
         return brokerBuilder;
     }
 
-    public SimpleAuthenticationPluginBuilder getSimpleAuthenticationPluginBuilder() {
-        return simpleAuthenticationPluginBuilder;
-    }
-
     public PluginsDef build() {
         PluginsDef pluginsDef = new PluginsDef();
         if (simpleAuthenticationPluginBuilder != null) {

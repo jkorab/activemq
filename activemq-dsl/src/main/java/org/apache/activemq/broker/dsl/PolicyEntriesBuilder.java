@@ -44,14 +44,6 @@ public class PolicyEntriesBuilder {
         return policyMapBuilder;
     }
 
-    public List<PolicyEntryBuilder> getPolicyEntryDefinitions() {
-        List<PolicyEntryBuilder> policyEntryBuilders = new ArrayList<>();
-        for (IndirectPolicyEntryBuilder indirect : indirectPolicyEntryBuilders) {
-            policyEntryBuilders.add(indirect.getPolicyEntryBuilder());
-        }
-        return policyEntryBuilders;
-    }
-
     public List<PolicyEntryDef> build() {
         List<PolicyEntryDef> policyEntryDefs = new ArrayList<>();
         for (IndirectPolicyEntryBuilder indirectPolicyEntryBuilder : indirectPolicyEntryBuilders) {

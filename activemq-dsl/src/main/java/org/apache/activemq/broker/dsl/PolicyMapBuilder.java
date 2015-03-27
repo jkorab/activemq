@@ -46,14 +46,6 @@ public class PolicyMapBuilder {
         return destinationPolicyBuilder;
     }
 
-    public PolicyEntriesBuilder getPolicyEntriesBuilder() {
-        return policyEntriesBuilder;
-    }
-
-    public DefaultPolicyEntryBuilder getDefaultPolicyEntryBuilder() {
-        return defaultPolicyEntryBuilder;
-    }
-
     public PolicyMapDef build() {
         PolicyMapDef policyMapDef = new PolicyMapDef();
         if (defaultPolicyEntryBuilder != null) {

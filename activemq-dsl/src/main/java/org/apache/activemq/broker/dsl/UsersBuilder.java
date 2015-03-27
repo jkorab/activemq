@@ -48,10 +48,6 @@ public class UsersBuilder {
         return simpleAuthenticationPluginBuilder;
     }
 
-    public List<AuthenticationUserBuilder> getAuthenticationUserBuilders() {
-        return authenticationUserBuilders;
-    }
-
     public List<AuthenticationUserDef> build() {
         ArrayList<AuthenticationUserDef> authenticationUserDefs = new ArrayList<>();
         for (AuthenticationUserBuilder authenticationUserBuilder : authenticationUserBuilders) {

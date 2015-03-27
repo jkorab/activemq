@@ -54,10 +54,6 @@ public class TransportConnectorsBuilder {
         return brokerBuilder;
     }
 
-    public Collection<TransportConnectorBuilder> getTransportConnectorDefinitions() {
-        return transportConnectorBuilderMap.values();
-    }
-
     public List<TransportConnectorDef> build() {
         List<TransportConnectorDef> transportConnectorDefs = new ArrayList<>();
         for (TransportConnectorBuilder transportConnectorBuilder : transportConnectorBuilderMap.values()) {

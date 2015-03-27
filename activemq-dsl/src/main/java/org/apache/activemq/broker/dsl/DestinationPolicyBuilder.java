@@ -40,10 +40,6 @@ public class DestinationPolicyBuilder {
         return brokerBuilder;
     }
 
-    public PolicyMapBuilder getPolicyMapBuilder() {
-        return policyMapBuilder;
-    }
-
     DestinationPolicyDef build() {
         DestinationPolicyDef destinationPolicyDef = new DestinationPolicyDef();
         if (policyMapBuilder != null) {
