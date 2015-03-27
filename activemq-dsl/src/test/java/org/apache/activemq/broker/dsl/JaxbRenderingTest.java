@@ -19,6 +19,9 @@ package org.apache.activemq.broker.dsl;
 
 import static org.junit.Assert.*;
 import static org.apache.activemq.broker.dsl.ActiveMQBrokers.*;
+
+import org.apache.activemq.test.dsl.BrokerResource;
+import org.junit.Rule;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,42 +34,29 @@ import javax.xml.bind.JAXBException;
 public class JaxbRenderingTest {
     private Logger log = LoggerFactory.getLogger(this.getClass());
     
+    @Rule
+    public BrokerResource broker = new BrokerResource(
+            broker("embedded").useJmx(false).persistent(false)
+            .transportConnectors()
+                .transportConnector("openwire", "tcp://0.0.0.0:61616")
+                .transportConnector("nio", "nio://0.0.0.0:61617")
+            .end()
+            .networkConnectors()
+                .networkConnector("toNowhere", "static:failover:(tcp://localhost:61619)")
+            .end());
+
     @Test
     public void testXmlRendering() throws JAXBException {
-        BrokerContext context = new BrokerContext(
-                broker("embedded").useJmx(false).persistent(false)
-                .transportConnectors()
-                    .transportConnector("openwire", "tcp://0.0.0.0:61616")
-                    .transportConnector("nio", "nio://0.0.0.0:61617")
-                .end());
-
-        context.start();
-        try {
-            String xml = context.getConfigAsXml();
-            log.info(xml);
-            assertNotNull(xml);
-        } finally {
-            context.stop();
-        }
+        String xml = broker.getContext().getConfigAsXml();
+        log.info(xml);
+        assertNotNull(xml);
     }
 
     @Test
     public void testJsonRendering() throws JAXBException {
-        BrokerContext context = new BrokerContext(
-                broker("embedded").useJmx(false).persistent(false)
-                .transportConnectors()
-                    .transportConnector("openwire", "tcp://0.0.0.0:61616")
-                    .transportConnector("nio", "nio://0.0.0.0:61617")
-                .end());
-
-        context.start();
-        try {
-            String xml = context.getConfigAsJson();
-            log.info(xml);
-            assertNotNull(xml);
-        } finally {
-            context.stop();
-        }
+        String xml = broker.getContext().getConfigAsJson();
+        log.info(xml);
+        assertNotNull(xml);
     }
 
 }

@@ -51,8 +51,18 @@ public class NetworkConnectorBuilder {
         return destinationsDefinition;
     }
 
-    public NetworkConnectorsBuilder end() {
-        return networkConnectorsBuilder;
+    /**
+     * Adds a new transportConnector.
+     */
+    public NetworkConnectorBuilder networkConnector(String name, String uri) {
+        return networkConnectorsBuilder.networkConnector(name, uri);
+    }
+
+    /**
+     * Closes off the networkConnectors block.
+     */
+    public BrokerBuilder end() {
+        return networkConnectorsBuilder.end();
     }
 
     public NetworkConnectorDef build() {

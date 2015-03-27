@@ -49,7 +49,11 @@ public class NetworkConnectorsBuilder {
         return transportConnectorDefinition;
     }
 
-    public BrokerBuilder end() {
+    /**
+     * Closes off this block. Can only be called from a networkConnector, meaning that at least one
+     * networkConnector must be defined.
+     */
+    BrokerBuilder end() {
         return brokerBuilder;
     }
 

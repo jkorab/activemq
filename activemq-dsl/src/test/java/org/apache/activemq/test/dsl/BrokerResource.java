@@ -156,4 +156,8 @@ public class BrokerResource extends ExternalResource {
         }
         return getConnection(transportConnectorName);
     }
+
+    public BrokerContext getContext() {
+        return brokerContext;
+    }
 }
