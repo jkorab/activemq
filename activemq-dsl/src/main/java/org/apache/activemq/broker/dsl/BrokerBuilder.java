@@ -36,13 +36,268 @@ public class BrokerBuilder {
         brokerDef.setBrokerName(brokerName);
     }
 
-    public BrokerBuilder persistent(boolean persistent) {
+    public BrokerBuilder advisorySupport(Boolean advisorySupport) {
+        brokerDef.setAdvisorySupport(advisorySupport);
+        return this;
+    }
+
+    public BrokerBuilder allowTempAutoCreationOnSend(Boolean allowTempAutoCreationOnSend) {
+        brokerDef.setAllowTempAutoCreationOnSend(allowTempAutoCreationOnSend);
+        return this;
+    }
+
+    public BrokerBuilder brokerId(String brokerId) {
+        brokerDef.setBrokerId(brokerId);
+        return this;
+    }
+
+    public BrokerBuilder brokerName(String brokerName) {
+        brokerDef.setBrokerName(brokerName);
+        return this;
+    }
+
+    public BrokerBuilder brokerObjectName(String brokerObjectName) {
+        brokerDef.setBrokerObjectName(brokerObjectName);
+        return this;
+    }
+
+    public BrokerBuilder cacheTempDestinations(Boolean cacheTempDestinations) {
+        brokerDef.setCacheTempDestinations(cacheTempDestinations);
+        return this;
+    }
+
+    public BrokerBuilder consumerSystemUsagePortion(Integer consumerSystemUsagePortion) {
+        brokerDef.setConsumerSystemUsagePortion(consumerSystemUsagePortion);
+        return this;
+    }
+
+    public BrokerBuilder dataDirectory(String dataDirectory) {
+        brokerDef.setDataDirectory(dataDirectory);
+        return this;
+    }
+
+    public BrokerBuilder dataDirectoryFile(String dataDirectoryFile) {
+        brokerDef.setDataDirectoryFile(dataDirectoryFile);
+        return this;
+    }
+
+    public BrokerBuilder dedicatedTaskRunner(Boolean dedicatedTaskRunner) {
+        brokerDef.setDedicatedTaskRunner(dedicatedTaskRunner);
+        return this;
+    }
+
+    public BrokerBuilder deleteAllMessagesOnStartup(Boolean deleteAllMessagesOnStartup) {
+        brokerDef.setDeleteAllMessagesOnStartup(deleteAllMessagesOnStartup);
+        return this;
+    }
+
+    public BrokerBuilder enableStatistics(Boolean enableStatistics) {
+        brokerDef.setEnableStatistics(enableStatistics);
+        return this;
+    }
+
+    public BrokerBuilder keepDurableSubsActive(Boolean keepDurableSubsActive) {
+        brokerDef.setKeepDurableSubsActive(keepDurableSubsActive);
+        return this;
+    }
+
+    public BrokerBuilder maxPurgedDestinationsPerSweep(Integer maxPurgedDestinationsPerSweep) {
+        brokerDef.setMaxPurgedDestinationsPerSweep(maxPurgedDestinationsPerSweep);
+        return this;
+    }
+
+    public BrokerBuilder mbeanInvocationTimeout(Long mbeanInvocationTimeout) {
+        brokerDef.setMbeanInvocationTimeout(mbeanInvocationTimeout);
+        return this;
+    }
+
+    public BrokerBuilder monitorConnectionSplits(Boolean monitorConnectionSplits) {
+        brokerDef.setMonitorConnectionSplits(monitorConnectionSplits);
+        return this;
+    }
+
+    public BrokerBuilder networkConnectorStartAsync(Boolean networkConnectorStartAsync) {
+        brokerDef.setNetworkConnectorStartAsync(networkConnectorStartAsync);
+        return this;
+    }
+
+    public BrokerBuilder offlineDurableSubscriberTaskSchedule(Long offlineDurableSubscriberTaskSchedule) {
+        brokerDef.setOfflineDurableSubscriberTaskSchedule(offlineDurableSubscriberTaskSchedule);
+        return this;
+    }
+
+    public BrokerBuilder offlineDurableSubscriberTimeout(Long offlineDurableSubscriberTimeout) {
+        brokerDef.setOfflineDurableSubscriberTimeout(offlineDurableSubscriberTimeout);
+        return this;
+    }
+
+    public BrokerBuilder passiveSlave(Boolean passiveSlave) {
+        brokerDef.setPassiveSlave(passiveSlave);
+        return this;
+    }
+
+    public BrokerBuilder persistenceThreadPriority(Integer persistenceThreadPriority) {
+        brokerDef.setPersistenceThreadPriority(persistenceThreadPriority);
+        return this;
+    }
+
+    public BrokerBuilder persistent(Boolean persistent) {
         brokerDef.setPersistent(persistent);
         return this;
     }
 
-    public BrokerBuilder useJmx(boolean useJmx) {
+    public BrokerBuilder populateJMSXUserID(Boolean populateJMSXUserID) {
+        brokerDef.setPopulateJMSXUserID(populateJMSXUserID);
+        return this;
+    }
+
+    public BrokerBuilder populateUserNameInMBeans(Boolean populateUserNameInMBeans) {
+        brokerDef.setPopulateUserNameInMBeans(populateUserNameInMBeans);
+        return this;
+    }
+
+    public BrokerBuilder producerSystemUsagePortion(Integer producerSystemUsagePortion) {
+        brokerDef.setProducerSystemUsagePortion(producerSystemUsagePortion);
+        return this;
+    }
+
+    public BrokerBuilder restartAllowed(Boolean restartAllowed) {
+        brokerDef.setRestartAllowed(restartAllowed);
+        return this;
+    }
+
+    public BrokerBuilder schedulePeriodForDestinationPurge(Integer schedulePeriodForDestinationPurge) {
+        brokerDef.setSchedulePeriodForDestinationPurge(schedulePeriodForDestinationPurge);
+        return this;
+    }
+
+    public BrokerBuilder schedulerDirectory(String schedulerDirectory) {
+        brokerDef.setSchedulerDirectory(schedulerDirectory);
+        return this;
+    }
+
+    public BrokerBuilder schedulerDirectoryFile(String schedulerDirectoryFile) {
+        brokerDef.setSchedulerDirectoryFile(schedulerDirectoryFile);
+        return this;
+    }
+
+    public BrokerBuilder schedulerSupport(Boolean schedulerSupport) {
+        brokerDef.setSchedulerSupport(schedulerSupport);
+        return this;
+    }
+
+    public BrokerBuilder shutdownOnMasterFailure(Boolean shutdownOnMasterFailure) {
+        brokerDef.setShutdownOnMasterFailure(shutdownOnMasterFailure);
+        return this;
+    }
+
+    public BrokerBuilder shutdownOnSlaveFailure(Boolean shutdownOnSlaveFailure) {
+        brokerDef.setShutdownOnSlaveFailure(shutdownOnSlaveFailure);
+        return this;
+    }
+
+    public BrokerBuilder splitSystemUsageForProducersConsumers(Boolean splitSystemUsageForProducersConsumers) {
+        brokerDef.setSplitSystemUsageForProducersConsumers(splitSystemUsageForProducersConsumers);
+        return this;
+    }
+
+    public BrokerBuilder start(Boolean start) {
+        brokerDef.setStart(start);
+        return this;
+    }
+
+    public BrokerBuilder startAsync(Boolean startAsync) {
+        brokerDef.setStartAsync(startAsync);
+        return this;
+    }
+
+    public BrokerBuilder storeOpenWireVersion(Integer storeOpenWireVersion) {
+        brokerDef.setStoreOpenWireVersion(storeOpenWireVersion);
+        return this;
+    }
+
+    public BrokerBuilder supportFailOver(Boolean supportFailOver) {
+        brokerDef.setSupportFailOver(supportFailOver);
+        return this;
+    }
+
+    public BrokerBuilder systemExitOnShutdown(Boolean systemExitOnShutdown) {
+        brokerDef.setSystemExitOnShutdown(systemExitOnShutdown);
+        return this;
+    }
+
+    public BrokerBuilder systemExitOnShutdownExitCode(Integer systemExitOnShutdownExitCode) {
+        brokerDef.setSystemExitOnShutdownExitCode(systemExitOnShutdownExitCode);
+        return this;
+    }
+
+    public BrokerBuilder taskRunnerPriority(Integer taskRunnerPriority) {
+        brokerDef.setTaskRunnerPriority(taskRunnerPriority);
+        return this;
+    }
+
+    public BrokerBuilder timeBeforePurgeTempDestinations(Integer timeBeforePurgeTempDestinations) {
+        brokerDef.setTimeBeforePurgeTempDestinations(timeBeforePurgeTempDestinations);
+        return this;
+    }
+
+    public BrokerBuilder tmpDataDirectory(String tmpDataDirectory) {
+        brokerDef.setTmpDataDirectory(tmpDataDirectory);
+        return this;
+    }
+
+    public BrokerBuilder useAuthenticatedPrincipalForJMSXUserID(Boolean useAuthenticatedPrincipalForJMSXUserID) {
+        brokerDef.setUseAuthenticatedPrincipalForJMSXUserID(useAuthenticatedPrincipalForJMSXUserID);
+        return this;
+    }
+
+    public BrokerBuilder useJmx(Boolean useJmx) {
         brokerDef.setUseJmx(useJmx);
+        return this;
+    }
+
+    public BrokerBuilder useLocalHostBrokerName(Boolean useLocalHostBrokerName) {
+        brokerDef.setUseLocalHostBrokerName(useLocalHostBrokerName);
+        return this;
+    }
+
+    public BrokerBuilder useLoggingForShutdownErrors(Boolean useLoggingForShutdownErrors) {
+        brokerDef.setUseLoggingForShutdownErrors(useLoggingForShutdownErrors);
+        return this;
+    }
+
+    public BrokerBuilder useMirroredQueues(Boolean useMirroredQueues) {
+        brokerDef.setUseMirroredQueues(useMirroredQueues);
+        return this;
+    }
+
+    public BrokerBuilder useShutdownHook(Boolean useShutdownHook) {
+        brokerDef.setUseShutdownHook(useShutdownHook);
+        return this;
+    }
+
+    public BrokerBuilder useTempMirroredQueues(Boolean useTempMirroredQueues) {
+        brokerDef.setUseTempMirroredQueues(useTempMirroredQueues);
+        return this;
+    }
+
+    public BrokerBuilder useVirtualTopics(Boolean useVirtualTopics) {
+        brokerDef.setUseVirtualTopics(useVirtualTopics);
+        return this;
+    }
+
+    public BrokerBuilder vmConnectorURI(String vmConnectorURI) {
+        brokerDef.setVmConnectorURI(vmConnectorURI);
+        return this;
+    }
+
+    public BrokerBuilder waitForSlave(Boolean waitForSlave) {
+        brokerDef.setWaitForSlave(waitForSlave);
+        return this;
+    }
+
+    public BrokerBuilder waitForSlaveTimeout(Long waitForSlaveTimeout) {
+        brokerDef.setWaitForSlaveTimeout(waitForSlaveTimeout);
         return this;
     }
 
