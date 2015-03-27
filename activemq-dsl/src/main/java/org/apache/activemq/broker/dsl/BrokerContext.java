@@ -21,12 +21,18 @@ import org.apache.activemq.broker.dsl.model.BrokerDef;
 import org.apache.activemq.broker.dsl.model.TransportConnectorDef;
 import org.apache.activemq.broker.dsl.translator.BrokerServiceTranslator;
 import org.apache.commons.lang.Validate;
+import org.codehaus.jettison.mapped.Configuration;
+import org.codehaus.jettison.mapped.MappedNamespaceConvention;
+import org.codehaus.jettison.mapped.MappedXMLStreamWriter;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.StringWriter;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -135,5 +141,30 @@ public class BrokerContext {
         }
         String xml = stringWriter.toString();
         return xml;
+    }
+
+    public String getConfigAsJson() {
+        if (brokerDef == null) {
+            throw new IllegalStateException("context has not been started");
+        }
+        StringWriter stringWriter = new StringWriter();
+        try {
+            JAXBContext jc = JAXBContext.newInstance(BrokerDef.class);
+            Marshaller marshaller = jc.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            Configuration config = new Configuration();
+            Map<String, String> xmlToJsonNamespaces = new HashMap<>();
+            xmlToJsonNamespaces.put("http://activemq.apache.org/schema/core", "");
+            config.setXmlToJsonNamespaces(xmlToJsonNamespaces);
+            MappedNamespaceConvention con = new MappedNamespaceConvention(config);
+
+            XMLStreamWriter xmlStreamWriter = new MappedXMLStreamWriter(con, stringWriter);
+            marshaller.marshal(brokerDef, xmlStreamWriter);
+        } catch (JAXBException e) {
+            throw new RuntimeException(e);
+        }
+        String json = stringWriter.toString();
+        return json;
     }
 }

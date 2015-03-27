@@ -18,6 +18,7 @@
 package org.apache.activemq.broker.dsl;
 
 import static org.junit.Assert.*;
+import static org.apache.activemq.broker.dsl.ActiveMQBrokers.*;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,9 +33,11 @@ public class JaxbRenderingTest {
     
     @Test
     public void testXmlRendering() throws JAXBException {
-        BrokerContext context = new BrokerContext(ActiveMQBrokers.broker("embedded").useJmx(false).persistent(false)
+        BrokerContext context = new BrokerContext(
+                broker("embedded").useJmx(false).persistent(false)
                 .transportConnectors()
-                    .transportConnector("openwire", "tcp://0.0.0.0:61616").end()
+                    .transportConnector("openwire", "tcp://0.0.0.0:61616")
+                    .transportConnector("nio", "nio://0.0.0.0:61617")
                 .end());
 
         context.start();
@@ -46,4 +49,24 @@ public class JaxbRenderingTest {
             context.stop();
         }
     }
+
+    @Test
+    public void testJsonRendering() throws JAXBException {
+        BrokerContext context = new BrokerContext(
+                broker("embedded").useJmx(false).persistent(false)
+                .transportConnectors()
+                    .transportConnector("openwire", "tcp://0.0.0.0:61616")
+                    .transportConnector("nio", "nio://0.0.0.0:61617")
+                .end());
+
+        context.start();
+        try {
+            String xml = context.getConfigAsJson();
+            log.info(xml);
+            assertNotNull(xml);
+        } finally {
+            context.stop();
+        }
+    }
+
 }

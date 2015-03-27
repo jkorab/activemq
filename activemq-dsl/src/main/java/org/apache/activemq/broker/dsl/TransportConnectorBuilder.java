@@ -36,8 +36,18 @@ public class TransportConnectorBuilder {
         transportConnectorDef.setUri(uri);
     }
 
-    public TransportConnectorsBuilder end() {
-        return transportConnectorsBuilder;
+    /**
+     * Adds a new transportConnector.
+     */
+    public TransportConnectorBuilder transportConnector(String name, String uri) {
+        return transportConnectorsBuilder.transportConnector(name, uri);
+    }
+
+    /**
+     * Closes off the transportConnectors block.
+     */
+    public BrokerBuilder end() {
+        return transportConnectorsBuilder.end();
     }
 
     public TransportConnectorDef build() {
