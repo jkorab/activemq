@@ -23,7 +23,6 @@ import org.apache.activemq.broker.dsl.model.*;
 import org.apache.activemq.broker.jmx.ManagementContext;
 import org.apache.activemq.broker.region.policy.PolicyEntry;
 import org.apache.activemq.broker.region.policy.PolicyMap;
-import org.apache.activemq.network.DiscoveryNetworkConnector;
 import org.apache.activemq.network.NetworkConnector;
 import org.apache.activemq.security.AuthenticationUser;
 import org.apache.activemq.security.SimpleAuthenticationPlugin;
@@ -31,7 +30,6 @@ import org.apache.activemq.security.SimpleAuthenticationPlugin;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -310,18 +308,11 @@ public class BrokerServiceTranslator {
         }
     }
 
-
     private void addNetworkConnectors(BrokerService brokerService, List<NetworkConnectorDef> networkConnectorDefs) {
         if (networkConnectorDefs == null) return;
 
         for (NetworkConnectorDef networkConnectorDef : networkConnectorDefs) {
-            NetworkConnector networkConnector;
-            try {
-                networkConnector = new DiscoveryNetworkConnector(URI.create(networkConnectorDef.getUri()));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            networkConnector.setName(networkConnectorDef.getName());
+            NetworkConnector networkConnector = new NetworkConnectorTranslator().translate(networkConnectorDef);
             try {
                 brokerService.addNetworkConnector(networkConnector);
             } catch (Exception e) {

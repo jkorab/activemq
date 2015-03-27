@@ -42,7 +42,7 @@ public class JaxbRenderingTest {
                 .transportConnector("nio", "nio://0.0.0.0:61617")
             .end()
             .networkConnectors()
-                .networkConnector("toNowhere", "static:failover:(tcp://localhost:61619)")
+                .networkConnector("loopback", "static:failover:(tcp://localhost:61616)")
             .end());
 
     @Test
