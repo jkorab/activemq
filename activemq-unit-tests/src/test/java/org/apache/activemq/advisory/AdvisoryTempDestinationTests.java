@@ -72,7 +72,7 @@ public class AdvisoryTempDestinationTests {
                     .end()
                 .end()
                 .transportConnectors()
-                    .transportConnector("openwire", "tcp://localhost:" + AvailablePortFinder.getNextAvailable()).end()
+                    .transportConnector("openwire", "tcp://localhost:" + AvailablePortFinder.getNextAvailable())
                 .end());
 
     private ConstantPendingMessageLimitStrategy getPendingMessageLimitStrategy() {

@@ -62,7 +62,7 @@ public class AdvisoryTests {
                     .end()
                 .end()
                 .transportConnectors()
-                    .transportConnector("openwire", "tcp://localhost:" + AvailablePortFinder.getNextAvailable()).end()
+                    .transportConnector("openwire", "tcp://localhost:" + AvailablePortFinder.getNextAvailable())
                 .end());
 
     private ConstantPendingMessageLimitStrategy getPendingMessageLimitStrategy() {
@@ -141,7 +141,7 @@ public class AdvisoryTests {
         producer.send(m);
 
         Message msg = advisoryConsumer.receive(1000);
-        assertNotNull(msg);
+        assertNotNull(msg); // FIXME failing
     }
 
     @Test
