@@ -43,6 +43,8 @@ public class JaxbRenderingTest {
             .end()
             .networkConnectors()
                 .networkConnector("loopback", "static:failover:(tcp://localhost:61616)")
+                    .alwaysSyncSend(true).checkDuplicateMessagesOnDuplex(true)
+                    .conduitSubscriptions(false)
             .end());
 
     @Test
