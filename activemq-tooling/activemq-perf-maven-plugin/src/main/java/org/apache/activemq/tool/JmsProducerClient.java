@@ -91,73 +91,48 @@ public class JmsProducerClient extends AbstractJmsMeasurableClient {
         try {
             getConnection().start();
             if (client.getMsgFileName() != null) {
-                LOG.info("Starting to publish " +
-                    messageCount +
-                    " messages from file " +
-                    client.getMsgFileName()
-                );
+                LOG.info("Starting to publish {} messages from file {}", messageCount, client.getMsgFileName());
             } else {
-                LOG.info("Starting to publish " +
-                    messageCount +
-                    " messages of size " +
-                    client.getMessageSize() +
-                    " byte(s)."
-                );
+                LOG.info("Starting to publish {} messages of size {} byte(s).", messageCount, client.getMessageSize());
             }
 
             // Send one type of message only, avoiding the creation of different messages on sending
             if (!client.isCreateNewMsg()) {
                 // Create only a single message
-                createJmsTextMessage();
-
-                // Send to more than one actual destination
-                if (dest.length > 1) {
-                    for (int i = 0; i < messageCount; i++) {
-                        for (int j = 0; j < dest.length; j++) {
-                            getJmsProducer().send(dest[j], getJmsTextMessage());
-                            incThroughput();
-                            sleep();
-                            commitTxIfNecessary();
-                        }
-                    }
-                    // Send to only one actual destination
-                } else {
-                    for (int i = 0; i < messageCount; i++) {
-                        getJmsProducer().send(getJmsTextMessage());
-                        incThroughput();
-                        sleep();
-                        commitTxIfNecessary();
-                    }
-                }
-
+                JmsMessageFactory messageFactory = new ConstantJmsMessageFactory();
+                sendCountBasedMessages(dest, messageFactory, messageCount);
+            } else {
                 // Send different type of messages using indexing to identify each one.
                 // Message size will vary. Definitely slower, since messages properties
                 // will be set individually each send.
-            } else {
-                // Send to more than one actual destination
-                if (dest.length > 1) {
-                    for (int i = 0; i < messageCount; i++) {
-                        for (int j = 0; j < dest.length; j++) {
-                            getJmsProducer().send(dest[j], createJmsTextMessage("Text Message [" + i + "]"));
-                            incThroughput();
-                            sleep();
-                            commitTxIfNecessary();
-                        }
-                    }
-
-                    // Send to only one actual destination
-                } else {
-                    for (int i = 0; i < messageCount; i++) {
-                        getJmsProducer().send(createJmsTextMessage("Text Message [" + i + "]"));
-                        incThroughput();
-                        sleep();
-                        commitTxIfNecessary();
-                    }
-                }
+                JmsMessageFactory messageFactory = new OnDemandJmsMessageFactory("Text Message [%d]");
+                sendCountBasedMessages(dest, messageFactory, messageCount);
             }
         } finally {
             LOG.info("Finished sending");
             getConnection().close();
+        }
+    }
+
+    private void sendCountBasedMessages(Destination[] dest, JmsMessageFactory messageFactory, long messageCount) throws JMSException {
+        // Send to more than one actual destination
+        if (dest.length > 1) {
+            for (int i = 0; i < messageCount; i++) {
+                for (int j = 0; j < dest.length; j++) {
+                    getJmsProducer().send(dest[j], messageFactory.createTextMessage(i));
+                    incThroughput();
+                    sleep();
+                    commitTxIfNecessary();
+                }
+            }
+            // Send to only one actual destination
+        } else {
+            for (int i = 0; i < messageCount; i++) {
+                getJmsProducer().send(messageFactory.createTextMessage(i));
+                incThroughput();
+                sleep();
+                commitTxIfNecessary();
+            }
         }
     }
 
@@ -180,73 +155,49 @@ public class JmsProducerClient extends AbstractJmsMeasurableClient {
         try {
             getConnection().start();
             if (client.getMsgFileName() != null) {
-                LOG.info("Starting to publish messages from file " +
-                        client.getMsgFileName() +
-                        " for " +
-                        duration +
-                        " ms");
+                LOG.info("Starting to publish messages from file {} for {} ms", client.getMsgFileName(), duration);
             } else {
-                LOG.info("Starting to publish " +
-                        client.getMessageSize() +
-                        " byte(s) messages for " +
-                        duration +
-                        " ms");
+                LOG.info("Starting to publish {} byte(s) messages for {} ms", client.getMessageSize(), duration);
             }
+
             // Send one type of message only, avoiding the creation of different messages on sending
             if (!client.isCreateNewMsg()) {
                 // Create only a single message
-                createJmsTextMessage();
-
-                // Send to more than one actual destination
-                if (dest.length > 1) {
-                    while (System.currentTimeMillis() < endTime) {
-                        for (int j = 0; j < dest.length; j++) {
-                            getJmsProducer().send(dest[j], getJmsTextMessage());
-                            incThroughput();
-                            sleep();
-                            commitTxIfNecessary();
-                        }
-                    }
-                    // Send to only one actual destination
-                } else {
-                    while (System.currentTimeMillis() < endTime) {
-                        getJmsProducer().send(getJmsTextMessage());
-                        incThroughput();
-                        sleep();
-                        commitTxIfNecessary();
-                    }
-                }
-
+                JmsMessageFactory messageFactory = new ConstantJmsMessageFactory();
+                sendTimeBasedMessages(dest, messageFactory, endTime);
+            } else {
                 // Send different type of messages using indexing to identify each one.
                 // Message size will vary. Definitely slower, since messages properties
                 // will be set individually each send.
-            } else {
-                // Send to more than one actual destination
-                long count = 1;
-                if (dest.length > 1) {
-                    while (System.currentTimeMillis() < endTime) {
-                        for (int j = 0; j < dest.length; j++) {
-                            getJmsProducer().send(dest[j], createJmsTextMessage("Text Message [" + count++ + "]"));
-                            incThroughput();
-                            sleep();
-                            commitTxIfNecessary();
-                        }
-                    }
-
-                    // Send to only one actual destination
-                } else {
-                    while (System.currentTimeMillis() < endTime) {
-
-                        getJmsProducer().send(createJmsTextMessage("Text Message [" + count++ + "]"));
-                        incThroughput();
-                        sleep();
-                        commitTxIfNecessary();
-                    }
-                }
+                JmsMessageFactory messageFactory = new OnDemandJmsMessageFactory("Text Message [%d]");
+                sendTimeBasedMessages(dest, messageFactory, endTime);
             }
         } finally {
             LOG.info("Finished sending");
             getConnection().close();
+        }
+    }
+
+    private void sendTimeBasedMessages(Destination[] dest, JmsMessageFactory messageFactory, long endTime) throws JMSException {
+        // Send to more than one actual destination
+        long count = 1;
+        if (dest.length > 1) {
+            while (System.currentTimeMillis() < endTime) {
+                for (int j = 0; j < dest.length; j++) {
+                    getJmsProducer().send(dest[j], messageFactory.createTextMessage(count++));
+                    incThroughput();
+                    sleep();
+                    commitTxIfNecessary();
+                }
+            }
+            // Send to only one actual destination
+        } else {
+            while (System.currentTimeMillis() < endTime) {
+                getJmsProducer().send(messageFactory.createTextMessage(count++));
+                incThroughput();
+                sleep();
+                commitTxIfNecessary();
+            }
         }
     }
 
@@ -284,6 +235,44 @@ public class JmsProducerClient extends AbstractJmsMeasurableClient {
         return jmsProducer;
     }
 
+    interface JmsMessageFactory {
+        TextMessage createTextMessage(long messageCount) throws JMSException;
+    }
+
+    class ConstantJmsMessageFactory implements JmsMessageFactory {
+        private String text;
+        private TextMessage textMessage;
+
+        public ConstantJmsMessageFactory() {}
+
+        public ConstantJmsMessageFactory(String text) {
+            this.text = text;
+        }
+
+        @Override
+        public TextMessage createTextMessage(long messageCount) throws JMSException {
+            // messageCount is ignored, textMessage is lazily created
+            if (textMessage == null) {
+                textMessage = (text == null) ? createJmsTextMessage() : createJmsTextMessage(text);
+            }
+            return textMessage;
+        }
+    }
+
+    class OnDemandJmsMessageFactory implements JmsMessageFactory {
+        private final String text;
+
+        public OnDemandJmsMessageFactory(String text) {
+            this.text = text;
+        }
+
+        @Override
+        public TextMessage createTextMessage(long messageCount) throws JMSException {
+            String messageText = String.format(text, messageCount);
+            return createJmsTextMessage(messageText);
+        }
+    }
+
     public TextMessage createJmsTextMessage() throws JMSException {
         if (client.getMsgFileName() != null) {
             return loadJmsMessage();
@@ -306,10 +295,6 @@ public class JmsProducerClient extends AbstractJmsMeasurableClient {
 
     public TextMessage createJmsTextMessage(String text) throws JMSException {
         jmsTextMessage = getSession().createTextMessage(buildText(text, client.getMessageSize()));
-        return jmsTextMessage;
-    }
-
-    public TextMessage getJmsTextMessage() {
         return jmsTextMessage;
     }
 
